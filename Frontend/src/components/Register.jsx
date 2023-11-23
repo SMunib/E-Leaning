@@ -12,7 +12,7 @@ export default function Register(){
                 <input type="name" placeholder="Username" className="textbox"/>
                 <input type="email" placeholder="Email" className="textbox"/>
                 <input type="password" placeholder="Password" className="textbox"/>
-                <input type="password" placeholder="Confirm Password" className="textbox"/>
+                <input type="password" placeholder="Confirm_Password" className="textbox"/>
                 <Link to="/register-success">
                     <button type="submit">Confirm</button>
                 </Link>

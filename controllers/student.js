@@ -1,11 +1,12 @@
 const mydb = require('../routes/db');
+const bcrypt = require('bcryptjs');
 
 exports.registerStudent = async(req,res)=>{
     const {StudentID,FirstName,LastName,Email,Password,UniversityName,Country,City,PostalCode} = req.body;
-    const query = "Insert into student (StudentID,FirstName,LastName,Email,Password,UniversityName,Country,City,PostalCode) values (?,?,?,?,?,?,?,?,?)";
-
+    const query = 'Insert into student set ?';
+    let hashedPassword = await bcrypt.hash(Password,8);
     try{
-      mydb.query(query,[StudentID,FirstName,LastName,Email,Password,UniversityName,Country,City,PostalCode],(err) => {
+        mydb.query(query,{StudentID:StudentID,FirstName:FirstName,LastName:LastName,Email:Email,Password:hashedPassword,UniversityName:UniversityName,Country:Country,City:City,PostalCode:PostalCode},(err)=>{
         if(err){
           console.log('Error: Failed to insert into database: '+err);
           return res.status(400).json({message:err.message});
@@ -90,8 +91,15 @@ exports.updateStudentInfo = async(req,res) => {
       .join(', ');
 
     if(!updateAttributes) return res.status(400).json({message: 'No Valid attributes provided for update'});
+    const passwordIndex = updateAttributes.indexOf('Password');
+    const isPasswordIncluded = passwordIndex !== -1;
     const query = `update student set ${updateAttributes} where StudentID = ?`;//backticks
     const values = [...Object.values(req.body).filter((_,index) => allowedAttributes.includes(Object.keys(req.body)[index])),id];
+    if(isPasswordIncluded){
+      const password = req.body.Password;
+      let hashedPassword = await bcrypt.hash(password,8);
+      values[passwordIndex] = hashedPassword;
+    }
     try{
         mydb.query(query,values,(err,results)=>{
         if (err) return res.status(400).json({message:err.message});

@@ -4,6 +4,7 @@ const student = require('./routes/student');
 const course = require('./routes/course');
 const teacher = require('./routes/teacher');
 const discussionforum = require('./routes/discussionforum');
+const authorize = require('./routes/auth');
 const videos = require('./routes/videos');
 const app = express();
 const path = require('path');
@@ -19,7 +20,7 @@ app.use('/course',course);
 app.use('/teacher',teacher);
 app.use('/discussionforum',discussionforum);
 app.use('/videos',videos);
-app.use('/auth',require('./routes/auth'));
+app.use('/',authorize);
 
 const Port = process.env.Port || 2000;
 
