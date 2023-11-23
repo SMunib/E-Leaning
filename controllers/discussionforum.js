@@ -4,7 +4,7 @@ exports.addForum = async(req,res)=>{
     const {CourseID,Username,Comment,Timestamp,StudentID} = req.body;
     const query = "Insert into discussionforum (CourseID,Username,Comment,Timestamp,StudentID) values (?,?,?,?,?)";
     try{
-      mydb.query(query,[CourseID,Username,Comment,Timestamp,StudentID],(err) => {
+      await mydb.query(query,[CourseID,Username,Comment,Timestamp,StudentID],(err) => {
         if(err){
           console.log('Error: Failed to insert into database: '+err);
           return res.status(400).json({message:err.message});
@@ -22,7 +22,7 @@ exports.addForum = async(req,res)=>{
 exports.findForums = async(req,res) => {
     const query = 'Select * from discussionforum';
     try{
-      mydb.query(query,(err,results) => {
+      await mydb.query(query,(err,results) => {
         if(err){
           console.log('Error Reading from Database' +err);
           return res.status(400).json({message:err.message});
@@ -42,7 +42,7 @@ exports.findSpecificForum = async(req,res) => {
     var id = req.params.CourseID;
     const query = 'Select * from discussionforum where CourseID = ?';
     try{
-      mydb.query(query,[id],(err,results) => {
+      await mydb.query(query,[id],(err,results) => {
         if(err){
           console.log('Failed to execute query: '+err);
           return res.status(400).json({message:err.message});
@@ -67,7 +67,7 @@ exports.removeForum = async(req,res)=>{
     var id = req.params.CourseID;
     const query = 'Delete from discussionforum where CourseID = ?';
     try{
-      mydb.query(query,[id,url],(err,results) => {
+      await mydb.query(query,[id,url],(err,results) => {
         if(err) return res.status(400).json({message:err.message});
         if(results.affectedRows === 0) return res.status(404).json({message:'Forum not Found'});
         return res.status(201).json({
@@ -92,7 +92,7 @@ exports.modifyForum = async(req,res) => {
     const query = `update discussionforum set ${updateAttributes} where CourseID = ?`;//backticks
     const values = [...Object.values(req.body).filter((_,index) => allowedAttributes.includes(Object.keys(req.body)[index])),id];
     try{
-        mydb.query(query,values,(err,results)=>{
+        await mydb.query(query,values,(err,results)=>{
         if (err) return res.status(400).json({message:err.message});
         if(results.affectedRows === 0) return res.status(404).json({message:'Forum not Found in Table'});
         res.status(201).json({

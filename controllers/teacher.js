@@ -6,7 +6,7 @@ exports.addTeacher = async(req,res)=>{
     const query = "Insert into teacher set ?";
     let hashedPassword = await bcrypt.hash(Password,8);
     try{
-      mydb.query(query,{TeacherID:TeacherID,FirstName:FirstName,LastName:LastName,Email:Email,Password:hashedPassword,Qualification:Qualification,Country:Country,City:City,PostalCode:PostalCode,AccountNo:AccountNo},(err) => {
+      await mydb.query(query,{TeacherID:TeacherID,FirstName:FirstName,LastName:LastName,Email:Email,Password:hashedPassword,Qualification:Qualification,Country:Country,City:City,PostalCode:PostalCode,AccountNo:AccountNo},(err) => {
         if(err){
           console.log('Error: Failed to insert into database: '+err);
           return res.status(400).json({message:err.message});
@@ -24,7 +24,7 @@ exports.addTeacher = async(req,res)=>{
 exports.findAllTeachers = async(req,res) => {
     const query = 'Select * from teacher';
     try{
-      mydb.query(query,(err,results) => {
+      await mydb.query(query,(err,results) => {
         if(err){
           console.log('Error Reading from Database' +err);
           return res.status(400).json({message:err.message});
@@ -44,7 +44,7 @@ exports.findspecificTeacher = async(req,res) => {
     var id = req.params.TeacherID;
     const query = 'Select * from teacher where TeacherID = ?';
     try{
-      mydb.query(query,[id],(err,results) => {
+      await mydb.query(query,[id],(err,results) => {
         if(err){
           console.log('Failed to execute query: '+err);
           return res.status(400).json({message:err.message});
@@ -68,7 +68,7 @@ exports.findspecificTeacher = async(req,res) => {
     var id = req.params.TeacherID;
     const query = 'Delete from teacher where TeacherID = ?';
     try{
-      mydb.query(query,[id],(err,results) => {
+      await mydb.query(query,[id],(err,results) => {
         if(err) return res.status(400).json({message:err.message});
         if(results.affectedRows === 0) return res.status(404).json({message:'Id not Found'});
         return res.status(201).json({
@@ -100,7 +100,7 @@ exports.updateTeacherInfo = async(req,res) => {
       values[passwordIndex] = hashedPassword;
     }
     try{
-        mydb.query(query,values,(err,results)=>{
+        await mydb.query(query,values,(err,results)=>{
         if (err) return res.status(400).json({message:err.message});
         if(results.affectedRows === 0) return res.status(404).json({message:'Id not Found in Table'});
         res.status(201).json({
