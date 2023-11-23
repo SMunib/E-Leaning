@@ -1,11 +1,12 @@
 const mydb = require('../routes/db');
+const bcrypt = require('bcryptjs');
 
 exports.registerStudent = async(req,res)=>{
     const {StudentID,FirstName,LastName,Email,Password,UniversityName,Country,City,PostalCode} = req.body;
-    const query = "Insert into student (StudentID,FirstName,LastName,Email,Password,UniversityName,Country,City,PostalCode) values (?,?,?,?,?,?,?,?,?)";
-
+    const query = 'Insert into student set ?';
+    let hashedPassword = await bcrypt.hash(Password,8);
     try{
-      mydb.query(query,[StudentID,FirstName,LastName,Email,Password,UniversityName,Country,City,PostalCode],(err) => {
+        await mydb.query(query,{StudentID:StudentID,FirstName:FirstName,LastName:LastName,Email:Email,Password:hashedPassword,UniversityName:UniversityName,Country:Country,City:City,PostalCode:PostalCode},(err)=>{
         if(err){
           console.log('Error: Failed to insert into database: '+err);
           return res.status(400).json({message:err.message});
@@ -23,7 +24,7 @@ exports.registerStudent = async(req,res)=>{
 exports.findallStudents = async(req,res) => {
     const query = 'Select * from student';
     try{
-      mydb.query(query,(err,results) => {
+      await mydb.query(query,(err,results) => {
         if(err){
           console.log('Error Reading from Database' +err);
           return res.status(400).json({message:err.message});
@@ -44,7 +45,7 @@ exports.findallStudents = async(req,res) => {
     var id = req.params.StudentID;
     const query = 'Select * from student where StudentID = ?';
     try{
-      mydb.query(query,[id],(err,results) => {
+      await mydb.query(query,[id],(err,results) => {
         if(err){
           console.log('Failed to execute query: '+err);
           return res.status(400).json({message:err.message});
@@ -68,7 +69,7 @@ exports.removeStudent = async(req,res)=>{
     var id = req.params.StudentID;
     const query = 'Delete from student where StudentId = ?';
     try{
-      mydb.query(query,[id],(err,results) => {
+      await mydb.query(query,[id],(err,results) => {
         if(err) return res.status(400).json({message:err.message});
         if(results.affectedRows === 0) return res.status(404).json({message:'Id not Found'});
         return res.status(201).json({
@@ -90,10 +91,17 @@ exports.updateStudentInfo = async(req,res) => {
       .join(', ');
 
     if(!updateAttributes) return res.status(400).json({message: 'No Valid attributes provided for update'});
+    const passwordIndex = updateAttributes.indexOf('Password');
+    const isPasswordIncluded = passwordIndex !== -1;
     const query = `update student set ${updateAttributes} where StudentID = ?`;//backticks
     const values = [...Object.values(req.body).filter((_,index) => allowedAttributes.includes(Object.keys(req.body)[index])),id];
+    if(isPasswordIncluded){
+      const password = req.body.Password;
+      let hashedPassword = await bcrypt.hash(password,8);
+      values[passwordIndex] = hashedPassword;
+    }
     try{
-        mydb.query(query,values,(err,results)=>{
+        await mydb.query(query,values,(err,results)=>{
         if (err) return res.status(400).json({message:err.message});
         if(results.affectedRows === 0) return res.status(404).json({message:'Id not Found in Table'});
         res.status(201).json({

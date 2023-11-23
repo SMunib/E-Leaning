@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import '../styleSheets/Login.css'
 import { Link } from 'react-router-dom';
 
+<<<<<<< HEAD
 export default function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -88,6 +89,26 @@ export default function Register() {
               onChange={handleUserTypeChange}
             />
           </label>
+=======
+export default function Register(){
+    return(
+        <div className="login-container">
+            <img src="../images/loginImage1.png" alt="" />
+            <form action="Login" className="loginForm">
+            <img className="Logo" src="../images/1.png" alt="" />
+                <h1 className="heading">Register</h1>
+                <input type="name" placeholder="Username" className="textbox"/>
+                <input type="email" placeholder="Email" className="textbox"/>
+                <input type="password" placeholder="Password" className="textbox"/>
+                <input type="password" placeholder="Confirm_Password" className="textbox"/>
+                <Link to="/register-success">
+                    <button type="submit">Confirm</button>
+                </Link>
+                <div className="footer">
+                    <h3>Already have an account? <Link to="/">Login</Link></h3>
+                </div>
+            </form>
+>>>>>>> 37406c875ca852b34b14200a5911fa7fd3cc5bb7
         </div>
         <Link to={`/register-details?userType=${userType}`}>
           <button type="submit">Confirm</button>
