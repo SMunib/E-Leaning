@@ -27,11 +27,12 @@ exports.findAllTeachers = async(req,res) => {
           console.log('Error Reading from Database' +err);
           return res.status(400).json({message:err.message});
         }
-        res.status(201).json({
-          status:'ok',
-          message:'retrieved',
-          data:results,
-        });
+        // res.status(201).json({
+        //   status:'ok',
+        //   message:'retrieved',
+        //   data:results,
+        // });
+        res.json(results);
       });
     }catch(err){
       console.log('Error:: '+err);
