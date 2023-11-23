@@ -23,7 +23,7 @@ exports.registerStudent = async(req,res)=>{
 exports.findallStudents = async(req,res) => {
     const query = 'Select * from student';
     try{
-      mydb.query(query,(err,data) => {
+      mydb.query(query,(err,results) => {
         if(err){
           console.log('Error Reading from Database' +err);
           return res.status(400).json({message:err.message});
@@ -33,7 +33,7 @@ exports.findallStudents = async(req,res) => {
         //   message:'retrieved',
         //   data:data,
         // });
-        return res.json(data);
+        return res.json(results);
       });
     }catch(err){
       console.log('Error:: '+err);
