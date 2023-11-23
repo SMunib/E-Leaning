@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mydb = require('./db');
+
 //const db = require('./db');
    // console.log(mydb);
 //console.log(mydb.query);

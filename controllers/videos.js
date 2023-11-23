@@ -1,3 +1,5 @@
+const mydb = require('../routes/db');
+
 exports.addVideo = async(req,res)=>{
     const {CourseID,URL,Completed} = req.body;
     const query = "Insert into videos (CourseID,URL,Completed) values (?,?,?)";

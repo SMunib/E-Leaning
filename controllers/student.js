@@ -1,3 +1,5 @@
+const mydb = require('../routes/db');
+
 exports.registerStudent = async(req,res)=>{
     const {StudentID,FirstName,LastName,Email,Password,UniversityName,Country,City,PostalCode} = req.body;
     const query = "Insert into student (StudentID,FirstName,LastName,Email,Password,UniversityName,Country,City,PostalCode) values (?,?,?,?,?,?,?,?,?)";
@@ -21,16 +23,17 @@ exports.registerStudent = async(req,res)=>{
 exports.findallStudents = async(req,res) => {
     const query = 'Select * from student';
     try{
-      mydb.query(query,(err,results) => {
+      mydb.query(query,(err,data) => {
         if(err){
           console.log('Error Reading from Database' +err);
           return res.status(400).json({message:err.message});
         }
-        res.status(201).json({
-          status:'ok',
-          message:'retrieved',
-          data:results,
-        });
+        //  res.status(201).json({
+        //   status:'ok',
+        //   message:'retrieved',
+        //   data:data,
+        // });
+        return res.json(data);
       });
     }catch(err){
       console.log('Error:: '+err);

@@ -9,7 +9,7 @@ export default function Register(){
             <form action="Login" className="loginForm">
             <img className="Logo" src="../images/1.png" alt="" />
                 <h1 className="heading">Register</h1>
-                <input type="text" placeholder="Username" className="textbox"/>
+                <input type="name" placeholder="Username" className="textbox"/>
                 <input type="email" placeholder="Email" className="textbox"/>
                 <input type="password" placeholder="Password" className="textbox"/>
                 <input type="password" placeholder="Confirm Password" className="textbox"/>

@@ -1,3 +1,5 @@
+const mydb = require('../routes/db');
+
 exports.addForum = async(req,res)=>{
     const {CourseID,Username,Comment,Timestamp,StudentID} = req.body;
     const query = "Insert into discussionforum (CourseID,Username,Comment,Timestamp,StudentID) values (?,?,?,?,?)";

@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const mydb = require('./db');
 const teacherController = require('../controllers/teacher');
 
 router

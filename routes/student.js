@@ -1,7 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const mydb = require('./db');
 const studentController = require('../controllers/student');
+
+router
+  .route('/')
+  .get((req,res)=>{
+    res.json('Inside Student (LOL)')
+  });
 
 router
   .route("/add")

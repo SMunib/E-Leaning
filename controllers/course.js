@@ -1,3 +1,5 @@
+const mydb = require('../routes/db');
+
 exports.addCourse = async(req,res)=>{
     const {CourseID,CourseName,Duration,TeacherID,Modules,TotalStudents,TotalVids,StudentID,Grade} = req.body;
     const query = "Insert into course (CourseID,CourseName,Duration,TeacherID,Modules,TotalStudents,TotalVids,StudentID,Grade) values (?,?,?,?,?,?,?,?,?)";
