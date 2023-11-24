@@ -78,8 +78,6 @@ render() {
 ); 
 } 
 } 
->>>>>>> 37406c875ca852b34b14200a5911fa7fd3cc5bb7
-  
 // function App () {
 //     const [data, setData] = useState([])
 //     useEffect(() => {
