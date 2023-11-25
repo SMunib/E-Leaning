@@ -102,6 +102,9 @@ button{
 a{
     color: #4FC2D9;
 }
+.Error{
+    color: red;
+}
 
 .footer{
     color: #C7CDD5;

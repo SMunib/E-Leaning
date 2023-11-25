@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import '../styleSheets/Login.css'
-import { Link } from 'react-router-dom';
-import validation from "./LoginValidation";
+import React, { useState } from "react";
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userType, setUserType] = useState('student');
+  const [invalid, setInvalid] = useState(false);
+  const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -14,25 +15,28 @@ export default function Login() {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   }
-  const [errors,setErrors] = useState([])
-  const [shouldRedirect, setShouldRedirect] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Now you can use the 'email' and 'password' variables as needed.
-    // You might want to send them to a server, validate, etc.
-    const validationErrors = validation(email,password);
-    if(validationErrors.email || validationErrors.password){
-      setErrors(validationErrors);
-    }else{
-      setShouldRedirect(true);
+
+    if (userType === "student") {
+      // Perform student validation using email and password
+      if (email === "student@example.com" && password === "studentpassword") {
+        console.log('Student login successful');
+        
+        // Navigate to the student dashboard or perform other actions
+        navigate("/home");
+      } else {
+        console.log('Invalid student credentials');
+        setInvalid(true);
+      }
+    } else if (userType === "teacher") {
+      // Perform teacher validation using teacher ID
     }
   }
-
-  useEffect(() => {
-    if(shouldRedirect){
-      window.location.href = "/home"
-    }
-  },[shouldRedirect]);
+  const handleUserTypeChange = (e) => {
+    setUserType(e.target.value);
+  }
 
   return (
     <div className="login-container">
@@ -40,14 +44,16 @@ export default function Login() {
       <form onSubmit={handleSubmit} className="loginForm">
         <img className="Logo" src="../images/1.png" alt="" />
         <h1 className="heading">Login</h1>
+      {invalid && <div className="Error">
+          <p>Invalid credentials</p>
+        </div>}
         <input
           type="email"
           placeholder="Email"
           className="textbox"
           value={email}
-          onChange={handleEmailChange}    
+          onChange={handleEmailChange}
         />
-        <span style = {{color : 'red' }}>{errors.email}</span> 
         <input
           type="password"
           placeholder="Password"
@@ -55,16 +61,35 @@ export default function Login() {
           value={password}
           onChange={handlePasswordChange}
         />
-        <span style = {{color : 'red' }}>{errors.password}</span> 
+        <div className="radio">
+        <label>
+            Student
+            <input
+              type="radio"
+              name="userType"
+              value="student"
+              checked={userType === 'student'}
+              onChange={handleUserTypeChange}
+            />
+          </label>
+          <label>
+            Teacher
+            <input
+              type="radio"
+              name="userType"
+              value="teacher"
+              checked={userType === 'teacher'}
+              onChange={handleUserTypeChange}
+            />
+          </label>
+        </div>
         <div className="options">
           <div className="RememberMe">
             <input type="checkbox" /><label>Remember me</label>
           </div>
           <Link to="/reset-pass">Forgot Password</Link>
         </div>
-        {/* <Link to= "/home"> */}
           <button type="submit">Login</button>
-        {/* </Link> */}
         <div className="footer">
           <h3>Don't have an account? <Link to="/register">Register</Link></h3>
         </div>
