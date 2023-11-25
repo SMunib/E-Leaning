@@ -14,6 +14,7 @@ exports.registerStudent = async(req,res)=>{
         res.status(201).json({
           status:'ok',
           message:'Student Registered',
+          success : true,
         });
       });
     }catch(err){

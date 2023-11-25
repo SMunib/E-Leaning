@@ -1,10 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const mydb = require('./db');
 const authController = require('../controllers/auth');
 
 router
-  .route('/register')
-  .post(authController.register);
+  .route('/registerStudent')
+  .post(authController.checkStudentRegistration);
+
+router
+  .route('/registerTeacher')
+  .post(authController.checkTeacherRegisteration);
+    
+router
+  .route('/loginStudent')  
+  .post(authController.checkLoginStudent);
+
+router
+  .route('/loginTeacher')
+  .post(authController.checkLoginTeacher);
 
 module.exports = router;
