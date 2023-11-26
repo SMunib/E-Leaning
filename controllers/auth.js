@@ -59,22 +59,25 @@ exports.checkTeacherRegisteration = async (req,res) =>{
 }
 
 exports.checkLoginStudent = async(req,res) => {
-    const {Email , Password} = req.body;
+    const {Email,Password} = req.body;
 //Check if Email exists in database
-    db.query('Select * from student where Email = ?',[Email],async(err,results)=>{
+    db.query('Select * from student where Email = ?',[Email],async(error,results)=>{
         if(error){
             console.log(error);
         }
+        
         if(results.length === 0 ){return res.json({
             success : false,
-            message : 'Email or password is incorrect'
+            message : 'Email or password is incorrect',
         });}
 //Check if Passwords Match
         const storedhashedPassword = results[0].Password;
         const passwordMatch = await bcrypt.compare(Password,storedhashedPassword);
+        console.log(passwordMatch);
         if(!passwordMatch) { return res.json({
             success:false,
-            message : 'Email or password is incorrect'
+            message : 'Password is incorrect',
+            error:"Email or Password is wrong",
         });}
 //Generate Token if Matched
         const token = jwt.sign({Email:Email},'JWTSecretKey',{expiresIn : '1h'});
@@ -85,17 +88,20 @@ exports.checkLoginStudent = async(req,res) => {
 exports.checkLoginTeacher = async(req,res) => {
     const {Email , Password} = req.body;
 //Check if Email exists in database
-    db.query('Select * from teacher where Email = ?',[Email],async(err,results)=>{
+    db.query('Select * from teacher where Email = ?',[Email],async(error,results)=>{
         if(error){
             console.log(error);
         }
+        console.log(results.length);
         if(results.length === 0 ){return res.json({
             success : false,
             message : 'Email or password is incorrect'
         });}
 //Check if Passwords Match
         const storedhashedPassword = results[0].Password;
+        console.log(storedhashedPassword);
         const passwordMatch = await bcrypt.compare(Password,storedhashedPassword);
+        console.log(passwordMatch);
         if(!passwordMatch) { return res.json({
             success:false,
             message : 'Email or password is incorrect'

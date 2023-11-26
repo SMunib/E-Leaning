@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 exports.registerStudent = async(req,res)=>{
     const {StudentID,FirstName,LastName,Email,Password,UniversityName,Country,City,PostalCode} = req.body;
     const query = 'Insert into student set ?';
-    let hashedPassword = await bcrypt.hash(Password,8);
+    let hashedPassword = await bcrypt.hash(Password,10);
     try{
         await mydb.query(query,{StudentID:StudentID,FirstName:FirstName,LastName:LastName,Email:Email,Password:hashedPassword,UniversityName:UniversityName,Country:Country,City:City,PostalCode:PostalCode},(err)=>{
         if(err){

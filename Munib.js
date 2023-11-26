@@ -4,8 +4,9 @@ const student = require('./routes/student');
 const course = require('./routes/course');
 const teacher = require('./routes/teacher');
 const discussionforum = require('./routes/discussionforum');
-const authorize = require('./routes/auth');
+const authorize = require('./routes/LoginValidation');
 const videos = require('./routes/videos');
+const auth = require('./routes/auth');
 const app = express();
 const path = require('path');
  const publicDirectory = path.join(__dirname,'./Frontend/src/components');
@@ -21,7 +22,7 @@ app.use('/teacher',teacher);
 app.use('/discussionforum',discussionforum);
 app.use('/videos',videos);
 app.use('/',authorize);
-
+app.use('/auth',auth);
 const Port = process.env.Port || 2000;
 
 // app.get('/',(req,res) => {

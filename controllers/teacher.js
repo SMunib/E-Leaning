@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 exports.addTeacher = async(req,res)=>{
     const {TeacherID,FirstName,LastName,Email,Password,Qualification,City,Country,PostalCode,AccountNo} = req.body;
     const query = "Insert into teacher set ?";
-    let hashedPassword = await bcrypt.hash(Password,8);
+    let hashedPassword = await bcrypt.hash(Password,10);
     try{
       await mydb.query(query,{TeacherID:TeacherID,FirstName:FirstName,LastName:LastName,Email:Email,Password:hashedPassword,Qualification:Qualification,Country:Country,City:City,PostalCode:PostalCode,AccountNo:AccountNo},(err) => {
         if(err){
@@ -14,6 +14,7 @@ exports.addTeacher = async(req,res)=>{
         res.status(201).json({
           status:'ok',
           message:'New Teacher Hired',
+          success:true,
         });
       });
     }catch(err){

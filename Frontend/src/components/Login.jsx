@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import { Link, useNavigate } from 'react-router-dom';
+// import validation from "./LoginValidation";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('student');
+  const [Email, setEmail] = useState('');
+  const [Password, setPassword] = useState('');
+  const [userType, setUserType] = useState('');
   const [invalid, setInvalid] = useState(false);
+  // const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
+  // const [shouldRedirect, setShouldRedirect] = useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -16,27 +19,35 @@ export default function Login() {
     setPassword(e.target.value);
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (userType === "student") {
-      // Perform student validation using email and password
-      if (email === "student@example.com" && password === "studentpassword") {
-        console.log('Student login successful');
-        
-        // Navigate to the student dashboard or perform other actions
-        navigate("/home");
-      } else {
-        console.log('Invalid student credentials');
-        setInvalid(true);
-      }
-    } else if (userType === "teacher") {
-      // Perform teacher validation using teacher ID
-    }
-  }
   const handleUserTypeChange = (e) => {
     setUserType(e.target.value);
   }
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try{
+      const response = await fetch('http://localhost:2000/login',{
+        method : 'POST',
+        headers :{
+          'Content-Type':'application/json',
+        },
+        body:JSON.stringify({Email,Password,userType}),
+      });
+      const data = await response.json();
+      if(data.success){
+        navigate('/home')
+      }else{
+        console.log("Validation Error: ", data.error)
+        setInvalid(true);
+        // setErrors(data.error);
+      }
+    }catch(error){
+      console.log('Error during Login: ',error);
+      setInvalid(true);
+    }
+  }
+  
 
   return (
     <div className="login-container">
@@ -48,19 +59,24 @@ export default function Login() {
           <p>Invalid credentials</p>
         </div>}
         <input
-          type="email"
+          type="Email"
           placeholder="Email"
           className="textbox"
-          value={email}
+          value={Email}
           onChange={handleEmailChange}
         />
+        {/* <span style={{ color: 'red' }}>{errors.error}</span> */}
         <input
-          type="password"
+          type="Password"
           placeholder="Password"
           className="textbox"
-          value={password}
+          value={Password}
           onChange={handlePasswordChange}
         />
+        {/* {errors && <div className="Error">
+        <p>{errors}</p> 
+          </div>} */}
+
         <div className="radio">
         <label>
             Student
