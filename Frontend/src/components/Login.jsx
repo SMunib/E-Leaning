@@ -5,9 +5,9 @@ import { Link, useNavigate } from 'react-router-dom';
 export default function Login() {
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
-  const [userType, setUserType] = useState('');
+  const [userType, setUserType] = useState('student');
   const [invalid, setInvalid] = useState(false);
-  // const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
   // const [shouldRedirect, setShouldRedirect] = useState(false);
 
@@ -39,8 +39,12 @@ export default function Login() {
         navigate('/home')
       }else{
         console.log("Validation Error: ", data.error)
-        setInvalid(true);
-        // setErrors(data.error);
+        if(data.message !== "validation error"){
+          setInvalid(true);
+          setErrors("");
+        }else{
+          setErrors(data.error);
+        }
       }
     }catch(error){
       console.log('Error during Login: ',error);
@@ -56,7 +60,7 @@ export default function Login() {
         <img className="Logo" src="../images/1.png" alt="" />
         <h1 className="heading">Login</h1>
       {invalid && <div className="Error">
-          <p>Invalid credentials</p>
+          <p>Email or Password does not match</p>
         </div>}
         <input
           type="Email"
@@ -65,7 +69,7 @@ export default function Login() {
           value={Email}
           onChange={handleEmailChange}
         />
-        {/* <span style={{ color: 'red' }}>{errors.error}</span> */}
+        <span style={{ color: 'red' }}>{errors.Email}</span>
         <input
           type="Password"
           placeholder="Password"
@@ -73,10 +77,7 @@ export default function Login() {
           value={Password}
           onChange={handlePasswordChange}
         />
-        {/* {errors && <div className="Error">
-        <p>{errors}</p> 
-          </div>} */}
-
+        <span style={{ color: 'red' }}>{errors.Password}</span>
         <div className="radio">
         <label>
             Student

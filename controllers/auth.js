@@ -5,18 +5,22 @@ const  student = require('./student');
 const teacher = require('./teacher');
 
 exports.checkStudentRegistration = async (req,res) =>{
-    const { Email,Password,Confirm_Password } = req.body;
+    const { Email,Password,confirmPassword } = req.body;
     db.query('Select Email from student where Email=?',[Email],async(error,results) => {
         if(error){
             console.log(error);
         }
+        console.log(Password);
+        console.log(confirmPassword);
         if(results.length > 0){
             return res.json({
-                message:'That email is already in use'
+                message:'That email is already in use',
+                success:false
             })  
-        }else if(Password !== Confirm_Password){
+        }else if(Password !== confirmPassword){
             return res.json({
-                message:'Passwords do not match'
+                message:'Passwords do not match',
+                success:false,
             });
         }else{
             try{
@@ -24,7 +28,8 @@ exports.checkStudentRegistration = async (req,res) =>{
             }catch(error){
                 console.log('Error',error);
                 return res.status(500).json({
-                    message:"Internal server error"
+                    message:"Internal server error",
+                    success:false
                 });
             }
         }
@@ -33,26 +38,28 @@ exports.checkStudentRegistration = async (req,res) =>{
 }
 
 exports.checkTeacherRegisteration = async (req,res) =>{
-    
-    const { Email,Password,Confirm_Password } = req.body;
+    let err = {};
+    const { Email,Password,confirmPassword } = req.body;
     db.query('Select Email from teacher where Email=?',[Email],async(error,results) => {
         if(error){
             console.log(error);
         }
         if(results.length > 0){
             return res.json({
-                message:'That email is already in use'
+                message:'Email is already in use',
+                success:false
             });  
-        }else if(Password !== Confirm_Password){
+        }else if(Password !== confirmPassword){
             return res.json({
-                message:'Passwords do not match'
+                message:'Passwords do not match',
+                success:false
             })
         }else{
             try{
                 await teacher.addTeacher(req,res);
             }catch(error){
                 console.log('Error' +error);
-                return res.status(500).json({message:'Internal Server Error'});
+                return res.status(500).json({message:'Internal Server Error',success:false});
             }
         }
     });
@@ -99,10 +106,11 @@ exports.checkLoginTeacher = async(req,res) => {
         });}
 //Check if Passwords Match
         const storedhashedPassword = results[0].Password;
-        console.log(storedhashedPassword);
-        const passwordMatch = await bcrypt.compare(Password,storedhashedPassword);
-        console.log(passwordMatch);
-        if(!passwordMatch) { return res.json({
+        // console.log(storedhashedPassword);
+        const hashpass = await bcrypt.hash(Password,10);
+        // console.log(passwordMatch);
+        //For some strange effing reason bcrypt.compare does not work in this particular function. Smh
+        if(!hashpass === storedhashedPassword) { return res.json({
             success:false,
             message : 'Email or password is incorrect'
         });}

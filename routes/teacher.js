@@ -11,7 +11,7 @@ router
 .get(teacherController.findAllTeachers);
 
 router
-  .route('/find/:TeacherID')
+  .route('/find/:Email')
   .get(teacherController.findspecificTeacher)
   .delete(teacherController.removeTeacher)
   .patch(teacherController.updateTeacherInfo);

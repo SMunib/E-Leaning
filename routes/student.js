@@ -17,7 +17,7 @@ router
   .get(studentController.findallStudents);
 
 router
-  .route('/find/:StudentID')
+  .route('/find/:Email')
   .get(studentController.findallStudents)
   .delete(studentController.removeStudent)
   .patch(studentController.updateStudentInfo);

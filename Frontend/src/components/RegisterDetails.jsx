@@ -1,114 +1,160 @@
 import React, { useState } from "react";
 import '../styleSheets/Login.css'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 export default function Register() {
-    const location = useLocation();
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-
+  const location = useLocation();
+  const [FirstName, setFirstName] = useState('');
+  const [LastName, setLastName] = useState('');
+  const [errorMessage , setErrorMessage] = useState('');
+  const [invalid, setInvalid] = useState(false);
+  // const [Email, setEmail] = useState('');
+  // const [Password, setPassword] = useState('');
+  // const [confirmPassword, setConfirmPassword] = useState('');
+  const [City, setCity] = useState('');
+  const [Country, setCountry] = useState('');
+  const [PostalCode, setPostalCode] = useState('');
+  const [AccountNo, setAccountNo] = useState('');
+  const [Qualification, setQualification] = useState('');
+  const [UniversityName, setUniversityName] = useState('');
+  // const [username,setUsername] = useState('');
+  const navigate = useNavigate();
   const userType = new URLSearchParams(location.search).get('userType');
-
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
+  const Email = new URLSearchParams(location.search).get('email');
+  console.log(Email);
+  const handleFirstNameChange = (e) => {
+    setFirstName(e.target.value);
   }
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  const handleLastNameChange = (e) => {
+    setLastName(e.target.value);
   }
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+  const handleCityChange = (e) => {
+    setCity(e.target.value);
   }
 
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
+  const handleCountryChange = (e) => {
+    setCountry(e.target.value);
   }
-
-  const handleUserTypeChange = (e) => {
-    setUserType(e.target.value);
+  const handleAccountNoChange =(e)=>{
+    setAccountNo(e.target.value);
   }
-
-  const handleSubmit = (e) => {
+  const handlePostalCodeChange = (e)=>{
+    setPostalCode(e.target.value);
+  }
+  const handleQualificationChange = (e) =>{
+    setQualification(e.target.value);
+  }
+  const handleUniversityNameChange =(e) =>{
+    setUniversityName(e.target.value);
+  }
+  // console.log(Email);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+    try{
+      const response = await fetch('http://localhost:2000/registerDetails',{
+        method : 'PATCH',
+        headers :{
+          'Content-Type':'application/json',
+        },
+        body:JSON.stringify({userType,Email,FirstName,LastName,City,Country,PostalCode,UniversityName,AccountNo,Qualification}),
+      });
+      const data = await response.json();
+      if(data.success){
+        setErrorMessage("");
+        console.log('success');
+        // navigate('/RegisterSuccess');
+      }else{
+        console.log("Validation error",data.error);
+        setErrorMessage(data.message);
+      }
+    }catch(error){
+      console.log('Error during Registeration: ',error);
+      setInvalid(true);
+    }
   }
 
   return (
     <div className="login-container">
       <img src="../images/loginImage1.png" alt="" />
       <form onSubmit={handleSubmit} className="loginForm">
-        {/* <img className="Logo" src="../images/1.png" alt="" /> */}
+        <img className="Logo" src="../images/1.png" alt="" />
         <h1 className="heading">Enter Details</h1>
-        
+        {invalid && <div className="Error">
+          <p>Error during Registeration</p>
+        </div>}
         <input
-          type="text"
+          type="FirstName"
           placeholder="First Name"
           className="textbox"
-          value={username}
-          onChange={handleUsernameChange}
+          value={FirstName}
+          onChange={handleFirstNameChange}
         />
         <input
-          type="text"
+          type="LastName"
           placeholder="Last Name"
           className="textbox"
-          value={email}
-          onChange={handleEmailChange}
+          value={LastName}
+          onChange={handleLastNameChange}
         />
         {userType === 'student' && (
         <input
-          type="text"
+          type="UniversityName"
           placeholder="University Name"
           className="textbox"
-          value={password}
-          onChange={handlePasswordChange}
+          value={UniversityName}
+          onChange={handleUniversityNameChange}
         />
         )}
         {userType === 'teacher' && (
         <input
-          type="text"
+          type="Qualification"
           placeholder="Qualification"
           className="textbox"
-          value={password}
-          onChange={handlePasswordChange}
+          value={Qualification}
+          onChange={handleQualificationChange}
         />
         )}
         {userType === 'teacher' && (
         <input
-          type="text"
-          placeholder="Acount Number"
+          type="AccountNo"
+          placeholder="Account Number"
           className="textbox"
-          value={password}
-          onChange={handlePasswordChange}
+          value={AccountNo}
+          onChange={handleAccountNoChange}
         />
         )}
         <input
-          type="text"
+          type="City"
           placeholder="City"
           className="textbox"
-          value={confirmPassword}
-          onChange={handleConfirmPasswordChange}
+          value={City}
+          onChange={handleCityChange}
         />
         <input
-          type="text"
+          type="Country"
           placeholder="Country"
           className="textbox"
-          value={confirmPassword}
-          onChange={handleConfirmPasswordChange}
+          value={Country}
+          onChange={handleCountryChange}
         />
         <input
-          type="text"
+          type="PostalCodde"
           placeholder="Postal Code"
           className="textbox"
-          value={confirmPassword}
-          onChange={handleConfirmPasswordChange}
+          value={PostalCode}
+          onChange={handlePostalCodeChange}
         />
-        <Link to={`/`}>
+        {errorMessage  && (
+        <div className="message-container" style = {{color:'red'}}>
+          <p>{errorMessage}</p>
+        </div>
+      )}
+        {/* <Link to={`/`}> */}
           <button type="submit">Confirm</button>
-        </Link>
+        {/* </Link> */}
         <div className="footer">
           <h3>Already have an account? <Link to="/">Login</Link></h3>
         </div>

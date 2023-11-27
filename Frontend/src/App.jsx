@@ -76,7 +76,7 @@ render() {
                 <Route path="/log out" Component={Logout} />
                 <Route path="/register" Component={Register} />
                 <Route path="/register-details" Component={RegisterDetails} />
-                {/* <Route path="/register-success" Component={RegisterSuccess} /> */}
+                <Route path="/register-success" Component={RegisterSuccess} />
                 <Route path="/reset-pass" Component={ResetPass} />
         </Routes> 
         </div> 

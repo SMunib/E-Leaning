@@ -1,18 +1,75 @@
-function validate (Email,Password){
-    let error = {}
-    const email_Pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const password_Pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/ ;
+const check = require('./auth');
+const validateLogin = require('./loginValidation');
+const teacher = require('./teacher');
+const student = require('./student');
 
-    // console.log(Email);
-    if(Email === ""){error.Email = "email should not be empty"}
-    else if(!email_Pattern.test(Email)){error.email = "Email pattern is incorrect"}
-    else{error.Email = ""}
-
-    if(Password === ""){error.Password = "password should not be empty"}
-    else if(!password_Pattern.test(Password)){error.Password = "Password Pattern is Incorrect"}
-    else{error.Password = ""}
-
-    return error;
+exports.loginValidation = async(req,res) => {
+    const {Email , Password , userType} = req.body;
+    // console.log("IN controller: ",Email); 
+    const error = validateLogin(Email,Password);
+    const hasErrors = Object.values(error).some((errorMsg) => errorMsg !== '');
+    if(hasErrors){
+        return res.json({success:false,error,message:"validation error"});
+    }
+    if(userType === "student"){
+        try{
+            await check.checkLoginStudent(req,res);
+        }catch(error){
+            console.log('Error: '+error);
+            return res.status(500).json({message:'Internal Server Error',success:false});
+        }
+    }else if(userType === "teacher"){
+        try{
+            await check.checkLoginTeacher(req,res);
+        }catch(error){
+            console.log('Error: '+error);
+            return res.status(500).json({message:'Internal Server Error',success:false});
+        }
+    }
 }
 
-module.exports = validate;
+exports.registerValidation = async(req,res) =>{
+    const {Email , Password , userType} = req.body;
+    // console.log("IN controller: ",Email); 
+    const error = validateLogin(Email,Password);
+    const hasErrors = Object.values(error).some((errorMsg) => errorMsg !== '');
+    if(hasErrors){
+        return res.json({success:false,error,message:"validation error"});
+    }
+    if(userType === "student"){
+        try{
+            await check.checkStudentRegistration(req,res);
+        }catch(error){
+            console.log('Error: '+error);
+            return res.status(500).json({message:'Internal Server Error',success:false});           
+        }
+    }else if(userType === "teacher"){
+        try{
+            await check.checkTeacherRegisteration(req,res);
+        }catch(error){
+            console.log('Error: '+error);
+            return res.status(500).json({message:'Internal Server Error',success:false});
+        }
+    }   
+}
+
+exports.registerDetailsValidation = async(req,res) =>{
+    const {Email ,userType} = req.body;
+    // console.log(Email);
+    // console.log(userType);
+    if(userType === "student"){
+        try{
+            await student.updateStudentInfo(req,res);
+        }catch(error){
+            console.log('Error: '+error);
+            return res.status(500).json({message:'Internal Server Error',success:false});           
+        }
+    }else if(userType === "teacher"){
+        try{
+            await teacher.updateTeacherInfo(req,res);
+        }catch(error){
+            console.log('Error: '+error);
+            return res.status(500).json({message:'Internal Server Error',success:false});
+        }
+    }
+}   

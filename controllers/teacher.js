@@ -2,19 +2,22 @@ const mydb = require('../routes/db');
 const bcrypt = require('bcryptjs');
 
 exports.addTeacher = async(req,res)=>{
-    const {TeacherID,FirstName,LastName,Email,Password,Qualification,City,Country,PostalCode,AccountNo} = req.body;
+    const {FirstName,LastName,Email,Password,Qualification,City,Country,PostalCode,AccountNo} = req.body;
     const query = "Insert into teacher set ?";
     let hashedPassword = await bcrypt.hash(Password,10);
     try{
-      await mydb.query(query,{TeacherID:TeacherID,FirstName:FirstName,LastName:LastName,Email:Email,Password:hashedPassword,Qualification:Qualification,Country:Country,City:City,PostalCode:PostalCode,AccountNo:AccountNo},(err) => {
+      await mydb.query(query,{FirstName:FirstName,LastName:LastName,Email:Email,Password:hashedPassword,Qualification:Qualification,Country:Country,City:City,PostalCode:PostalCode,AccountNo:AccountNo},(err,results) => {
         if(err){
           console.log('Error: Failed to insert into database: '+err);
           return res.status(400).json({message:err.message});
         }
         res.status(201).json({
           status:'ok',
-          message:'New Teacher Hired',
+          message:'Added',
           success:true,
+          data:{
+            email:Email,
+          },
         });
       });
     }catch(err){
@@ -84,8 +87,8 @@ exports.findspecificTeacher = async(req,res) => {
     }
   }
 exports.updateTeacherInfo = async(req,res) => {
-    const allowedAttributes = ['FirstName','LastName','Password','UniversityName','Country','City','PostalCode','AccountNo','Email'];
-    const id = req.params.TeacherID;
+    const allowedAttributes = ['FirstName','LastName','Password','Country','City','PostalCode','AccountNo'];
+    const Email = req.body.Email;
     const updateAttributes = Object.keys(req.body)
       .filter(attr => allowedAttributes.includes(attr))
       .map(attr => `${attr}=?`)//backticks
@@ -94,8 +97,8 @@ exports.updateTeacherInfo = async(req,res) => {
     if(!updateAttributes) return res.status(400).json({message: 'No Valid attributes provided for update'});
     const passwordIndex = updateAttributes.indexOf('Password');
     const isPasswordIncluded = passwordIndex !== -1;
-    const query = `update teacher set ${updateAttributes} where TeacherID = ?`;//backticks
-    const values = [...Object.values(req.body).filter((_,index) => allowedAttributes.includes(Object.keys(req.body)[index])),id];
+    const query = `update teacher set ${updateAttributes} where Email = ?`;//backticks
+    const values = [...Object.values(req.body).filter((_,index) => allowedAttributes.includes(Object.keys(req.body)[index])),Email];
     if(isPasswordIncluded){
       const password = req.body.Password;
       let hashedPassword = await bcrypt.hash(password,8);
@@ -104,11 +107,12 @@ exports.updateTeacherInfo = async(req,res) => {
     try{
         await mydb.query(query,values,(err,results)=>{
         if (err) return res.status(400).json({message:err.message});
-        if(results.affectedRows === 0) return res.status(404).json({message:'Id not Found in Table'});
+        if(results.affectedRows === 0) return res.status(404).json({message:'Email not Found in Table'});
         res.status(201).json({
           status:"ok",
           message:"Updated",
           data:results,
+          success:true,
         });
       });
     }catch(err){
