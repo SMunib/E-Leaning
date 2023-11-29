@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import '../styleSheets/Login.css'
 import { Link, useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-
 export default function Register() {
   const location = useLocation();
   const [FirstName, setFirstName] = useState('');
@@ -22,7 +21,7 @@ export default function Register() {
   const navigate = useNavigate();
   const userType = new URLSearchParams(location.search).get('userType');
   const Email = new URLSearchParams(location.search).get('email');
-  console.log(Email);
+  const [errors, setErrors] = useState([]);
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
   }
@@ -65,10 +64,16 @@ export default function Register() {
       if(data.success){
         setErrorMessage("");
         console.log('success');
-        // navigate('/RegisterSuccess');
+        navigate('/');
       }else{
-        console.log("Validation error",data.error);
-        setErrorMessage(data.message);
+        if(data.message === "validation error"){
+          setErrors(data.error);
+          setErrorMessage("");
+          alert("Validation Error");
+        }else{
+          setErrors("");
+          setErrorMessage(data.message);
+        }
       }
     }catch(error){
       console.log('Error during Registeration: ',error);
@@ -92,6 +97,7 @@ export default function Register() {
           value={FirstName}
           onChange={handleFirstNameChange}
         />
+        <span style={{ color: 'red' }}>{errors.FirstName}</span>
         <input
           type="LastName"
           placeholder="Last Name"
@@ -99,6 +105,7 @@ export default function Register() {
           value={LastName}
           onChange={handleLastNameChange}
         />
+        <span style={{ color: 'red' }}>{errors.LastName}</span>
         {userType === 'student' && (
         <input
           type="UniversityName"
@@ -133,6 +140,7 @@ export default function Register() {
           value={City}
           onChange={handleCityChange}
         />
+        <span style={{ color: 'red' }}>{errors.City}</span>
         <input
           type="Country"
           placeholder="Country"
@@ -140,6 +148,7 @@ export default function Register() {
           value={Country}
           onChange={handleCountryChange}
         />
+        <span style={{ color: 'red' }}>{errors.Country}</span>
         <input
           type="PostalCodde"
           placeholder="Postal Code"
@@ -147,6 +156,7 @@ export default function Register() {
           value={PostalCode}
           onChange={handlePostalCodeChange}
         />
+        <span style={{ color: 'red' }}>{errors.PostalCode}</span>
         {errorMessage  && (
         <div className="message-container" style = {{color:'red'}}>
           <p>{errorMessage}</p>

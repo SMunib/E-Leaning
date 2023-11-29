@@ -9,7 +9,7 @@ const videos = require('./routes/videos');
 const auth = require('./routes/auth');
 const app = express();
 const path = require('path');
- const publicDirectory = path.join(__dirname,'./Frontend/src/components');
+const publicDirectory = path.join(__dirname,'./Frontend/src/components');
 
 app.use(cors());
 app.use(express.static(publicDirectory));

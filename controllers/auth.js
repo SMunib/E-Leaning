@@ -38,7 +38,6 @@ exports.checkStudentRegistration = async (req,res) =>{
 }
 
 exports.checkTeacherRegisteration = async (req,res) =>{
-    let err = {};
     const { Email,Password,confirmPassword } = req.body;
     db.query('Select Email from teacher where Email=?',[Email],async(error,results) => {
         if(error){

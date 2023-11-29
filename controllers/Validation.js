@@ -1,5 +1,6 @@
 const check = require('./auth');
 const validateLogin = require('./loginValidation');
+const registerValidation = require('./registerValidation');
 const teacher = require('./teacher');
 const student = require('./student');
 
@@ -54,9 +55,14 @@ exports.registerValidation = async(req,res) =>{
 }
 
 exports.registerDetailsValidation = async(req,res) =>{
-    const {Email ,userType} = req.body;
+    const {City,Country,PostalCode,AccountNo,FirstName,LastName,UniversityName,Qualification,userType} = req.body;
     // console.log(Email);
     // console.log(userType);
+    const error = registerValidation(City,Country,PostalCode,AccountNo,FirstName,LastName,UniversityName,Qualification,userType);
+    const hasErrors = Object.values(error).some((errorMsg) => errorMsg !== '');
+    if(hasErrors){
+        return res.json({success:false,error,message:"validation error"});
+    }
     if(userType === "student"){
         try{
             await student.updateStudentInfo(req,res);

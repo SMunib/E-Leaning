@@ -55,9 +55,11 @@ export default function Register() {
         if(data.message === "validation error"){
           setErrors(data.error);
           setErrorMessage("");
+          alert("validation Error");
         }else{
             setErrors("");
             setErrorMessage(data.message);
+            alert(data.message);
         }
       }
     }catch(error){
