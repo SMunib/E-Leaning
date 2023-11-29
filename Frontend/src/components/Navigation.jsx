@@ -7,6 +7,7 @@ import Profile from './Profile';
 import AvailableCourses from './AvailableCourses'
 import Dashboard from './Dashboard';
 import Logout from './Logout';
+import Help from './Help';
 
 const Navigation = () => {
   const [selectedOption, setSelectedOption] = useState("Dashboard");
@@ -49,6 +50,14 @@ const Navigation = () => {
           </li>
           <li>
             <button
+              className={selectedOption === "Help" ? "active" : ""}
+              onClick={() => handleOptionClick("Help")}
+            >
+              Help
+            </button>
+          </li>
+          <li>
+            <button
               className={selectedOption === "Profile" ? "active" : ""}
               onClick={() => handleOptionClick("Profile")}
             >
@@ -71,6 +80,7 @@ const Navigation = () => {
         {selectedOption === "Courses" && <Courses />}
         {selectedOption === "Courses" && <Courses />}
         {selectedOption === "Profile" && <Profile />}
+        {selectedOption === "Help" && <Help />}
         {selectedOption === "Logout" && <Logout />}
         {selectedOption === "AvailableCourses" && <AvailableCourses />}
         {/* Add other conditions for different components */}

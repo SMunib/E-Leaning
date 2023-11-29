@@ -4,6 +4,7 @@
     padding: 20px;
     border: 1px solid #000000; /* Border around the dashboard */
     border-radius: 8px; /* Optional: Add border radius for a rounded appearance */
+    font-family: 'Urbanist', sans-serif;
   }
   
   .dashboard h1 {

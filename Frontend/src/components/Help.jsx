@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import './styles.css';
+import React, { useState } from "react";
+import "./Help.css";
+
 const Help = () => {
-  // State to manage user's question input
-  const [question, setQuestion] = useState('');
+  const [question, setQuestion] = useState("");
 
   // Function to handle the user's question input
   const handleQuestionChange = (e) => {
@@ -11,12 +11,11 @@ const Help = () => {
 
   // Function to submit the user's question to the system
   const submitQuestion = () => {
-    // You can perform any necessary actions here, such as sending the question to your backend for processing.
-    // For simplicity, we'll just log the question for now.
-    console.log('User question submitted:', question);
+    console.log("User question submitted:", question);
 
-    // Optionally, you can clear the input field after submission.
-    setQuestion('');
+    setQuestion("Your Question is submitted!\nThanks for Contacting Us ");
+    setTimeout(() => {}, 1000);
+    setQuestion("");
   };
 
   return (
