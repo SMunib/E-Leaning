@@ -26,34 +26,36 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      const response = await fetch('http://localhost:2000/login',{
-        method : 'POST',
-        headers :{
-          'Content-Type':'application/json',
-        },
-        body:JSON.stringify({Email,Password,userType}),
-      });
-      const data = await response.json();
-      if(data.success){
-        navigate('/home')
-      }else{
-        console.log("Validation Error: ", data.error)
-        if(data.message !== "validation error"){
-          setInvalid(true);
-          setErrors("");
-        }else{
-          setErrors(data.error);
-        }
-      }
-    }catch(error){
-      console.log('Error during Login: ',error);
-      setInvalid(true);
-    }
+    // try{
+    //   const response = await fetch('http://localhost:2000/login',{
+    //     method : 'POST',
+    //     headers :{
+    //       'Content-Type':'application/json',
+    //     },
+    //     body:JSON.stringify({Email,Password,userType}),
+    //   });
+    //   const data = await response.json();
+    //   if(data.success){
+    //     navigate('/home')
+    //   }else{
+    //     console.log("Validation Error: ", data.error)
+    //     if(data.message !== "validation error"){
+    //       setInvalid(true);
+    //       setErrors("");
+    //     }else{
+    //       setErrors(data.error);
+    //     }
+    //   }
+    // }catch(error){
+    //   console.log('Error during Login: ',error);
+    //   setInvalid(true);
+    // }
+    navigate('/home');
   }
   
 
   return (
+    <div className="login-page">
     <div className="login-container">
       <img src="../images/loginImage1.png" alt="" />
       <form onSubmit={handleSubmit} className="loginForm">
@@ -111,6 +113,7 @@ export default function Login() {
           <h3>Don't have an account? <Link to="/register">Register</Link></h3>
         </div>
       </form>
+    </div>
     </div>
   )
 }

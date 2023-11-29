@@ -1,93 +1,51 @@
-import React, { useState } from 'react';
-import './styles.css';
+import React, { useState, useEffect } from "react";
+import "./Profile.css";
+
+//had to update the API URL
 const Profile = () => {
-  // State for user profile data
-  const [userData, setUserData] = useState({
-    name: 'John Doe',
-    email: 'johndoe@example.com',
-    contact: '123-456-7890',
-    id: '123456',
-    education: '',
-    skills: '',
-  });
+  // State to store user profile data
+  const [profileData, setProfileData] = useState(null);
 
-  // Function to handle form input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUserData({
-      ...userData,
-      [name]: value,
-    });
-  };
+  const [loading, setLoading] = useState(true);
 
-  // Function to save education and skills
-  const saveData = () => {
-    // You can save this data to your backend here
-    console.log('User data saved:', userData);
-  };
+  useEffect(() => {
+    // Simulate fetching data from a database
+    const fetchData = async () => {
+      try {
+        // Start loading
+        setLoading(true);
 
+        // Replace the URL with your actual backend API endpoint
+        const response = await fetch("https://api.example.com/profile");
+        const data = await response.json();
+
+        setProfileData(data);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Call the fetchData function
+    fetchData();
+  }, []); // The empty dependency array ensures that useEffect runs only once,
   return (
     <div className="profile">
       <h1>Profile</h1>
-      <form>
+      {loading ? (
+        <p>Loading profile data...</p>
+      ) : profileData ? (
         <div>
-          <label>Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={userData.name}
-            onChange={handleInputChange}
-          />
+          <p>Name: {profileData.name}</p>
+          <p>Email: {profileData.email}</p>
+          <p>Phone Number: {profileData.phonenumber}</p>
+          <p>Qualifiction: {profleData.qualification}</p>
+          {/* Add additional profile information as needed */}
         </div>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={userData.email}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label>Contact:</label>
-          <input
-            type="text"
-            name="contact"
-            value={userData.contact}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label>ID:</label>
-          <input
-            type="text"
-            name="id"
-            value={userData.id}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label>Education Level:</label>
-          <input
-            type="text"
-            name="education"
-            value={userData.education}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label>Skills:</label>
-          <input
-            type="text"
-            name="skills"
-            value={userData.skills}
-            onChange={handleInputChange}
-          />
-        </div>
-        <button type="button" onClick={saveData}>
-          Save
-        </button>
-      </form>
+      ) : (
+        <p>Error loading profile data</p>
+      )}
     </div>
   );
 };

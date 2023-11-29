@@ -46,9 +46,7 @@
 
 import React, { Component } from 'react'; 
 import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom'; 
-import Home from './components/home'; 
-import About from './components/about'; 
-import Contact from './components/contact'; 
+import Home from './components/home';  
 import './App.css'; 
 import Login from './components/Login'
 import Navigation from './components/Navigation';

@@ -1,0 +1,43 @@
+.dashboard {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #000000; /* Border around the dashboard */
+    border-radius: 8px; /* Optional: Add border radius for a rounded appearance */
+  }
+  
+  .dashboard h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .dashboard section {
+    margin-top: 20px;
+    border: 1px solid #000000; /* Border around the section */
+    padding: 10px;
+    border-radius: 4px; /* Optional: Add border radius for a rounded appearance */
+  }
+  
+  .dashboard h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .dashboard ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .dashboard li {
+    background-color: #f4f4f4;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+  
+  .dashboard p {
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  

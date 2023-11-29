@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 export default function RegisterSuccess(){
     return(
+        <div className="login-page">
         <div className="login-container">
             <img src="../images/loginImage1.png" alt="" />
             <form action="Login" className="loginForm">
@@ -13,6 +14,7 @@ export default function RegisterSuccess(){
                     <button type="button">Login</button>
                 </Link>
             </form>
+        </div>
         </div>
     )
 }
