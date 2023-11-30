@@ -64,6 +64,7 @@ export default function Register() {
       if(data.success){
         setErrorMessage("");
         console.log('success');
+        //navigate('/RegisterSuccess');
         navigate('/');
       }else{
         if(data.message === "validation error"){

@@ -9,9 +9,9 @@ export default function RegisterSuccess(){
             <form action="Login" className="loginForm">
                 <img className="Logo" src="../images/1.png" alt="" />
                 <h1 className="heading">Thank you for your submission</h1>
-                <Link to="/">
+                {/* <Link to="/"> */}
                     <button type="button">Login</button>
-                </Link>
+                {/* </Link> */}
             </form>
         </div>
     )
