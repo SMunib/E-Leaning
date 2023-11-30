@@ -50,10 +50,12 @@ export default function Login() {
       console.log('Error during Login: ',error);
       setInvalid(true);
     }
+    //navigate('/home');
   }
   
 
   return (
+    <div className="login-page">
     <div className="login-container">
       <img src="../images/loginImage1.png" alt="" />
       <form onSubmit={handleSubmit} className="loginForm">
@@ -111,6 +113,7 @@ export default function Login() {
           <h3>Don't have an account? <Link to="/register">Register</Link></h3>
         </div>
       </form>
+    </div>
     </div>
   )
 }

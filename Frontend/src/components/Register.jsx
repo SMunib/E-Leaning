@@ -71,6 +71,7 @@ export default function Register() {
   }
 
   return (
+    <div className="login-page">
     <div className="login-container">
       <img src="../images/loginImage1.png" alt="" />
       <form onSubmit={handleSubmit} className="loginForm">
@@ -136,6 +137,7 @@ export default function Register() {
           <h3>Already have an account? <Link to="/">Login</Link></h3>
         </div>
       </form>
+    </div>
     </div>
   )
 }

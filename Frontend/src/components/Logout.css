@@ -1,0 +1,42 @@
+.logout {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(36, 18, 18, 0.1);
+  }
+  
+  .logout h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .logout p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .logout textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #af2b2b;
+    border-radius: 10px;
+    resize: vertical;
+  }
+  
+  .logout button {
+    background-color: #341f5e;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .logout button:hover {
+    background-color: #45a049;
+  }
+  

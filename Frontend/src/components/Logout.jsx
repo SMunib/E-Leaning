@@ -1,13 +1,10 @@
-import React from 'react';
-import './styles.css';
+import React from "react";
+import "./Logout.css";
 
 const Logout = () => {
   // Function to handle the logout action
   const handleLogout = () => {
-    // give location after logut
-   // window.location.href = '/login'; // add page where you want it to go after logout
-
-   // window.location.href = '/login'; // Replace '/login' with your actual login route.
+    window.location.href = '/';
   };
 
   return (

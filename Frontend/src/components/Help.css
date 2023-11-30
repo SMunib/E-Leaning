@@ -1,0 +1,43 @@
+.help {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(145, 112, 112, 0.1);
+    font-family: 'Urbanist', sans-serif;
+  }
+  
+  .help h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .help p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .help textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #af2b2b;
+    border-radius: 10px;
+    resize: vertical;
+  }
+  
+  .help button {
+    background-color: #341f5e;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .help button:hover {
+    background-color: #45a049;
+  }
+  
