@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const teacherController = require('../controllers/teacher');
+const jwt = require('./verifyJwt');
 
 router
   .route('/add')
@@ -11,9 +12,9 @@ router
 .get(teacherController.findAllTeachers);
 
 router
-  .route('/find/:Email')
-  .get(teacherController.findspecificTeacher)
-  .delete(teacherController.removeTeacher)
-  .patch(teacherController.updateTeacherInfo);
+  .route('/findspecific')
+  .get(jwt.verifyToken,teacherController.findspecificTeacher)
+  .delete(jwt.verifyToken,teacherController.removeTeacher)
+  .patch(jwt.verifyToken,teacherController.updateTeacherInfo);
   
 module.exports = router;

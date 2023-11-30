@@ -36,6 +36,7 @@ export default function Login() {
       });
       const data = await response.json();
       if(data.success){
+        localStorage.setItem("token",data.token);
         navigate('/home')
       }else{
         console.log("Validation Error: ", data.error)

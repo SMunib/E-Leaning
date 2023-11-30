@@ -1,5 +1,6 @@
 const mydb = require('../routes/db');
 const bcrypt = require('bcryptjs');
+const jwt = require('../routes/verifyJwt');
 
 exports.addTeacher = async(req,res)=>{
     const {FirstName,LastName,Email,Password,Qualification,City,Country,PostalCode,AccountNo} = req.body;
@@ -46,7 +47,7 @@ exports.findAllTeachers = async(req,res) => {
     }
   }
 exports.findspecificTeacher = async(req,res) => {
-    var id = req.params.TeacherID;
+    const id = req.userid;
     const query = 'Select * from teacher where TeacherID = ?';
     try{
       await mydb.query(query,[id],(err,results) => {
@@ -59,7 +60,7 @@ exports.findspecificTeacher = async(req,res) => {
           return res.status(404).json({message:'Error: Id Does not Exist in the Table'});
         }
         res.status(201).json({
-          status:'ok',
+          success:true,
           message:'data found',
           data:results,
         });

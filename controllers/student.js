@@ -46,7 +46,7 @@ exports.findallStudents = async(req,res) => {
     }
   }
   exports.findspecificStudent = async(req,res) => {
-    var id = req.params.StudentID;
+    const id = req.params.StudentID;
     const query = 'Select * from student where StudentID = ?';
     try{
       await mydb.query(query,[id],(err,results) => {
@@ -59,7 +59,7 @@ exports.findallStudents = async(req,res) => {
           return res.status(404).json({message:'Error: Id Does not Exist in the Table'});
         }
         res.status(201).json({
-          status:'ok',
+          success:true,
           message:'data found',
           data:results,
         });

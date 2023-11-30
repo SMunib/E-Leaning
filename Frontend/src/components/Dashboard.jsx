@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 
+const token = localStorage.getItem('token');
 // have to add API URLS and if want to add some info than add it in sections
 const Dashboard = () => {
   const [userName, setUserName] = useState("");
@@ -11,7 +12,13 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         // Replace 'https://api.example.com/user'
-        const userResponse = await fetch("https://api.example.com/user");
+        const userResponse = await fetch("https://localhost:2000/teacher/findspecifc",{
+          method:'GET',
+          headers:{
+            'Authorization':`Bearer ${token}`,
+            'Content Type':'application/json',
+          },
+        });
         const userData = await userResponse.json();
 
         // Replace 'https://api.example.com/enrolled-courses'
@@ -20,7 +27,7 @@ const Dashboard = () => {
         );
         const coursesData = await coursesResponse.json();
 
-        setUserName(userData.name);
+        setUserName(userData.FirstName);
         setEnrolledCourses(coursesData.courses);
       } catch (error) {
         console.error("Error fetching data:", error);

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./Profile.css";
 
+const token = localStorage.getItem('token');
+console.log(token);
+//Token is used in place of id for searching
+
 //had to update the API URL
 const Profile = () => {
   // State to store user profile data
@@ -16,10 +20,22 @@ const Profile = () => {
         setLoading(true);
 
         // Replace the URL with your actual backend API endpoint
-        const response = await fetch("https://api.example.com/profile");
+        // Changes here Aziz
+        const response = await fetch("https://localhost:2000/teacher/findspecifc",{
+          method:'GET',
+          headers:{
+            'Authorization':`Bearer ${token}`,
+            'Content-Type':'application/json',
+          },
+        });
         const data = await response.json();
-
-        setProfileData(data);
+        if(data.success){
+          console.log(data.data);
+          setProfileData(data.results);
+        }else{
+          console.log(data.message);
+          alert("Error in fetching data");
+        }
       } catch (error) {
         console.error("Error fetching profile data:", error);
       } finally {
@@ -37,10 +53,12 @@ const Profile = () => {
         <p>Loading profile data...</p>
       ) : profileData ? (
         <div>
-          <p>Name: {profileData.name}</p>
-          <p>Email: {profileData.email}</p>
-          <p>Phone Number: {profileData.phonenumber}</p>
-          <p>Qualifiction: {profleData.qualification}</p>
+          <p>First Name: {profileData.FirstName}</p>
+          <p>Last Name: {profileData.LastName}</p>
+          <p>Email: {profileData.Email}</p>
+          <p>Qualifiction: {profileData.Qualification}</p>
+          <p>City: {profileData.City}</p>
+          <p>Country: {profileData.Country}</p>
           {/* Add additional profile information as needed */}
         </div>
       ) : (

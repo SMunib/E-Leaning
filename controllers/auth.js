@@ -86,8 +86,10 @@ exports.checkLoginStudent = async(req,res) => {
             error:"Email or Password is wrong",
         });}
 //Generate Token if Matched
-        const token = jwt.sign({Email:Email},'JWTSecretKey',{expiresIn : '1h'});
-        return res.json({success : true,message:'Login Successful',token:token,results});
+        const userid = results[0].StudentID;
+        //console.log(userid);
+        const token = jwt.sign({userid},'JWTSecretKey',{expiresIn : '1h'});
+        return res.json({success : true,message:'Login Successful',token:token});
     });
 }
 
@@ -98,7 +100,7 @@ exports.checkLoginTeacher = async(req,res) => {
         if(error){
             console.log(error);
         }
-        console.log(results.length);
+        // console.log(results.length);
         if(results.length === 0 ){return res.json({
             success : false,
             message : 'Email or password is incorrect'
@@ -114,7 +116,8 @@ exports.checkLoginTeacher = async(req,res) => {
             message : 'Email or password is incorrect'
         });}
 //Generate Token if Matched
-        const token = jwt.sign({Email:Email},'JWTSecretKey',{expiresIn : '1h'});
+        const userid = results[0].TeacherID;
+        const token = jwt.sign({userid},'JWTSecretKey',{expiresIn : '1h'});
         return res.json({success : true,message:'Login Successful',token:token});
     });
 }
