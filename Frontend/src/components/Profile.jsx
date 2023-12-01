@@ -21,18 +21,18 @@ const Profile = () => {
         console.log(token);
         // Replace the URL with your actual backend API endpoint
         // Changes here Aziz
-        const response = await fetch("http://localhost:2000/teacher/findspecifc",{
-          method:'GET',
-          headers:{
-            'Authorization':`Bearer ${token}`,
-            'Content-Type':'application/json',
+        const response = await fetch("http://localhost:2000/teacher/findspecifc", {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
           },
         });
         const data = await response.json();
-        if(data.success){
+        if (data.success) {
           console.log(data.data);
           setProfileData(data.results);
-        }else{
+        } else {
           console.log(data.message);
           alert("Error in fetching data");
         }
@@ -56,10 +56,11 @@ const Profile = () => {
           <p>First Name: {profileData.FirstName}</p>
           <p>Last Name: {profileData.LastName}</p>
           <p>Email: {profileData.Email}</p>
-          {/* <p>Qualifiction: {profileData.Qualification}</p> */}
+          <p>Qualification: {profileData.Qualification}</p>
+          <p>Account Number: {profileData.AccountNo}</p>
           <p>City: {profileData.City}</p>
           <p>Country: {profileData.Country}</p>
-          {/* Add additional profile information as needed */}
+          <p>Postal Code: {profileData.PostalCode}</p>
         </div>
       ) : (
         <p>Error loading profile data</p>
