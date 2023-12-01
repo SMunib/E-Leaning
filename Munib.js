@@ -7,6 +7,7 @@ const discussionforum = require('./routes/discussionforum');
 const authorize = require('./routes/Validation');
 const videos = require('./routes/videos');
 const auth = require('./routes/auth');
+const req_course = require('./routes/reg_course');
 const app = express();
 const path = require('path');
 const publicDirectory = path.join(__dirname,'./Frontend/src/components');
@@ -23,6 +24,7 @@ app.use('/discussionforum',discussionforum);
 app.use('/videos',videos);
 app.use('/',authorize);
 app.use('/auth',auth);
+app.use('/reg_course',req_course);
 const Port = process.env.Port || 2000;
 
 // app.get('/',(req,res) => {

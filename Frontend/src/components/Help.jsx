@@ -12,7 +12,7 @@ const Help = () => {
   // Function to submit the user's question to the system
   const submitQuestion = () => {
     console.log("User question submitted:", question);
-
+    
     setQuestion("Your Question is submitted!\nThanks for Contacting Us ");
     setTimeout(() => {}, 1000);
     setQuestion("");

@@ -21,7 +21,7 @@ exports.addCourse = async(req,res)=>{
   }
 
 exports.findCourse = async(req,res) => {
-    const query = `Select distinct * from course`;
+    const query = "Select distinct * from course";
     try{
       await mydb.query(query,(err,results) => {
         if(err){
@@ -29,7 +29,7 @@ exports.findCourse = async(req,res) => {
           return res.status(400).json({message:err.message});
         }
         res.status(201).json({
-          status:'ok',
+          success:true,
           message:'retrieved',
           data:results,
         });

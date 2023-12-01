@@ -11,7 +11,7 @@ router
   .get(courseController.findCourse);
 
 router
-  .route('/find/:CourseID')
+  .route('/findspecific')
   .get(courseController.findspecificCourse)
   .delete(courseController.deleteCourse)
   .patch(courseController.updateCourse);

@@ -10,16 +10,33 @@ const Courses = ({ setActiveOption }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem('token');
         // Replace 'https://api.example.com/enrolled-courses' with your actual API endpoint for fetching enrolled courses
-        const enrolledResponse = await fetch('https://api.example.com/enrolled-courses');
+        const enrolledResponse = await fetch('http://localhost:2000/reg_course/findforteacher',{
+          method:'GET',
+          headers:{
+            'Authorization': `Bearer ${token}`,
+          }
+        });
         const enrolledData = await enrolledResponse.json();
+        if(enrolledData.success){
+          setEnrolledCourses(enrolledData.data);
+          console.log(enrolledData.data);
+        }else{alert("error");}
 
         // Replace 'https://api.example.com/available-courses' with your actual API endpoint for fetching available courses
-        const availableResponse = await fetch('https://api.example.com/available-courses');
+        const availableResponse = await fetch('http://localhost:2000/course/find',{
+          method:'GET',
+          headers:{
+            'Authorization': `Bearer ${token}`,
+          }
+        });
         const availableData = await availableResponse.json();
-
-        setEnrolledCourses(enrolledData.courses);
-        setAvailableCourses(availableData.courses);
+        if(availableData.success){
+          setAvailableCourses(availableData.data);
+          console.log(availableData.length);
+          console.log(availableData.success);
+        }else{alert("Error");}
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -29,6 +46,15 @@ const Courses = ({ setActiveOption }) => {
 
     fetchData();
   }, []); // The empty dependency array ensures that useEffect runs only once
+
+  // useEffect(() => {
+  //   // This effect will run when enrolledCourses changes
+  //   if (enrolledCourses.length > 0) {
+  //     console.log('Enrolled courses exist:', enrolledCourses);
+  //   } else {
+  //     console.log('No enrolled courses.');
+  //   }
+  // }, [enrolledCourses]);
 
   const handleCourseClick = (course) => {
     // Set the selected course
@@ -58,8 +84,8 @@ const Courses = ({ setActiveOption }) => {
             ) : enrolledCourses.length > 0 ? (
               <ul>
                 {enrolledCourses.map((course) => (
-                  <li key={course.id} onClick={() => handleCourseClick(course)}>
-                    {course.title}
+                  <li key={course.CourseID} onClick={() => handleCourseClick(course)}>
+                    {course.CourseName}
                   </li>
                 ))}
               </ul>
@@ -75,8 +101,8 @@ const Courses = ({ setActiveOption }) => {
             ) : availableCourses.length > 0 ? (
               <ul>
                 {availableCourses.map((course) => (
-                  <li key={course.id} onClick={() => handleCourseClick(course)}>
-                    {course.title}
+                  <li key={course.CourseID} onClick={() => handleCourseClick(course)}>
+                    {course.CourseName}
                   </li>
                 ))}
               </ul>

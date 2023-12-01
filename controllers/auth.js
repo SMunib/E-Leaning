@@ -118,6 +118,7 @@ exports.checkLoginTeacher = async(req,res) => {
 //Generate Token if Matched
         const userid = results[0].TeacherID;
         const token = jwt.sign({userid},'JWTSecretKey',{expiresIn : '1h'});
+        console.log(token);
         return res.json({success : true,message:'Login Successful',token:token});
     });
 }

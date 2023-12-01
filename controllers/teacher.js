@@ -1,6 +1,7 @@
 const mydb = require('../routes/db');
 const bcrypt = require('bcryptjs');
-const jwt = require('../routes/verifyJwt');
+const util = require('util');
+const queryAsync = util.promisify(mydb.query).bind(mydb);
 
 exports.addTeacher = async(req,res)=>{
     const {FirstName,LastName,Email,Password,Qualification,City,Country,PostalCode,AccountNo} = req.body;
@@ -50,12 +51,13 @@ exports.findspecificTeacher = async(req,res) => {
     const id = req.userid;
     const query = 'Select * from teacher where TeacherID = ?';
     try{
-      await mydb.query(query,[id],(err,results) => {
-        if(err){
-          console.log('Failed to execute query: '+err);
-          return res.status(400).json({message:err.message});
-        }
-        if(!results){
+      // await mydb.query(query,[id],(err,results) => {
+      //   if(err){
+      //     console.log('Failed to execute query: '+err);
+      //     return res.status(400).json({message:err.message});
+      //   }
+        const results = await queryAsync(query,[id]);
+        if(!results.length){
           console.log('Id does not exist ');
           return res.status(404).json({message:'Error: Id Does not Exist in the Table'});
         }
@@ -64,12 +66,12 @@ exports.findspecificTeacher = async(req,res) => {
           message:'data found',
           data:results,
         });
-      });
+      // });
     }catch(err){
       console.log('Error::'+err);
       res.status(500).send();
     }
-  }
+  };
   exports.removeTeacher = async(req,res)=>{
     var id = req.params.TeacherID;
     const query = 'Delete from teacher where TeacherID = ?';

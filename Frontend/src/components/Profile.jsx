@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Profile.css";
 
-const token = localStorage.getItem('token');
-console.log(token);
+
 //Token is used in place of id for searching
 
 //had to update the API URL
@@ -18,10 +17,11 @@ const Profile = () => {
       try {
         // Start loading
         setLoading(true);
-
+        const token = localStorage.getItem('token');
+        console.log(token);
         // Replace the URL with your actual backend API endpoint
         // Changes here Aziz
-        const response = await fetch("https://localhost:2000/teacher/findspecifc",{
+        const response = await fetch("http://localhost:2000/teacher/findspecifc",{
           method:'GET',
           headers:{
             'Authorization':`Bearer ${token}`,
@@ -56,7 +56,7 @@ const Profile = () => {
           <p>First Name: {profileData.FirstName}</p>
           <p>Last Name: {profileData.LastName}</p>
           <p>Email: {profileData.Email}</p>
-          <p>Qualifiction: {profileData.Qualification}</p>
+          {/* <p>Qualifiction: {profileData.Qualification}</p> */}
           <p>City: {profileData.City}</p>
           <p>Country: {profileData.Country}</p>
           {/* Add additional profile information as needed */}

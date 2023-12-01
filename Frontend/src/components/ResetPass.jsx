@@ -29,7 +29,7 @@ export default function Register() {
           <img className="Logo" src="../images/1.png" alt="" />
           <h1 className="heading">Reset Password</h1>
           <input type="email" placeholder="Email" className="textbox" value={email} onChange={handleEmailChange} />
-          <input type="password" placeholder="Password" className="textbox" value={password} onChange={handlePasswordChange} />
+          <input type="password" placeholder="New Password" className="textbox" value={password} onChange={handlePasswordChange} />
           <button type="submit">Confirm</button>
           <div className="footer">
             <h3>Already have an account? <Link to="/">Login</Link></h3>
