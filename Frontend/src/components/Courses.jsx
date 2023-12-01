@@ -12,31 +12,31 @@ const Courses = ({ setActiveOption }) => {
       try {
         const token = localStorage.getItem('token');
         // Replace 'https://api.example.com/enrolled-courses' with your actual API endpoint for fetching enrolled courses
-        const enrolledResponse = await fetch('http://localhost:2000/reg_course/findforteacher',{
-          method:'GET',
-          headers:{
+        const enrolledResponse = await fetch('http://localhost:2000/reg_course/findforteacher', {
+          method: 'GET',
+          headers: {
             'Authorization': `Bearer ${token}`,
           }
         });
         const enrolledData = await enrolledResponse.json();
-        if(enrolledData.success){
+        if (enrolledData.success) {
           setEnrolledCourses(enrolledData.data);
           console.log(enrolledData.data);
-        }else{alert("error");}
+        } else { alert("error"); }
 
         // Replace 'https://api.example.com/available-courses' with your actual API endpoint for fetching available courses
-        const availableResponse = await fetch('http://localhost:2000/course/find',{
-          method:'GET',
-          headers:{
+        const availableResponse = await fetch('http://localhost:2000/course/find', {
+          method: 'GET',
+          headers: {
             'Authorization': `Bearer ${token}`,
           }
         });
         const availableData = await availableResponse.json();
-        if(availableData.success){
+        if (availableData.success) {
           setAvailableCourses(availableData.data);
           console.log(availableData.length);
           console.log(availableData.success);
-        }else{alert("Error");}
+        } else { alert("Error"); }
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -85,7 +85,7 @@ const Courses = ({ setActiveOption }) => {
               <ul>
                 {enrolledCourses.map((course) => (
                   <li key={course.CourseID} onClick={() => handleCourseClick(course)}>
-                    {course.CourseName}
+                    {course.C_Name}
                   </li>
                 ))}
               </ul>
@@ -103,6 +103,8 @@ const Courses = ({ setActiveOption }) => {
                 {availableCourses.map((course) => (
                   <li key={course.CourseID} onClick={() => handleCourseClick(course)}>
                     {course.CourseName}
+                    {course.modules}
+                    {course.duration}
                   </li>
                 ))}
               </ul>
