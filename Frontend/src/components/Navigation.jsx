@@ -78,7 +78,6 @@ const Navigation = () => {
       <div className='choice'>
         {selectedOption === "Dashboard" && <Dashboard />}
         {selectedOption === "Courses" && <Courses />}
-        {selectedOption === "Courses" && <Courses />}
         {selectedOption === "Profile" && <Profile />}
         {selectedOption === "Help" && <Help />}
         {selectedOption === "Logout" && <Logout />}
