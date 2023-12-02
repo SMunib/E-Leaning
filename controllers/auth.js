@@ -122,3 +122,10 @@ exports.checkLoginTeacher = async(req,res) => {
         return res.json({success : true,message:'Login Successful',token:token});
     });
 }
+
+exports.checkLoginAdmin = async(req,res) =>{
+    const {Email,Password} = req.body;
+    if(Email === "Admin@gmail.com" && Password === "Admin123"){
+        return res.json({success:true,message:'Admin'});
+    };   
+}

@@ -35,10 +35,12 @@ export default function Login() {
         body:JSON.stringify({Email,Password,userType}),
       });
       const data = await response.json();
-      if(data.success){
+      if(data.success && data.message === "Login Successful"){
         localStorage.setItem("token",data.token);
        // console.log(localStorage.getItem("token"));
         navigate('/home')
+      }else if(data.success && data.message === "admin"){
+        //move to admin page
       }else{
         console.log("Validation Error: ", data.error)
         if(data.message !== "validation error"){
@@ -100,6 +102,16 @@ export default function Login() {
               name="userType"
               value="teacher"
               checked={userType === 'teacher'}
+              onChange={handleUserTypeChange}
+            />
+          </label>
+          <label>
+          Admin
+          <input
+              type="radio"
+              name="userType"
+              value="admin"
+              checked={userType === 'admin'}
               onChange={handleUserTypeChange}
             />
           </label>

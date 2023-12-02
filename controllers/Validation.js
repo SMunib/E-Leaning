@@ -26,6 +26,13 @@ exports.loginValidation = async(req,res) => {
             console.log('Error: '+error);
             return res.status(500).json({message:'Internal Server Error',success:false});
         }
+    }else{
+        try{
+            await check.checkLoginAdmin(req,res);
+        }catch(error){
+            console.log('Error:'+error);
+            return res.status(500).json({message:'Internal Server Error',success:false});
+        }
     }
 }
 
