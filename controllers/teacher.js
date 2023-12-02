@@ -8,8 +8,8 @@ exports.addTeacher = async(req,res)=>{
     const query = "Insert into teacher set ?";
     let hashedPassword = await bcrypt.hash(Password,10);
     try{
-      await mydb.query(query,{FirstName:FirstName,LastName:LastName,Email:Email,Password:hashedPassword,Qualification:Qualification,Country:Country,City:City,PostalCode:PostalCode,AccountNo:AccountNo},(err,results) => {
-        if(err){
+      const results = await queryAsync(query,{FirstName:FirstName,LastName:LastName,Email:Email,Password:hashedPassword,Qualification:Qualification,Country:Country,City:City,PostalCode:PostalCode,AccountNo:AccountNo})
+        if(!results.length){
           console.log('Error: Failed to insert into database: '+err);
           return res.status(400).json({message:err.message});
         }
@@ -21,13 +21,12 @@ exports.addTeacher = async(req,res)=>{
             email:Email,
           },
         });
-      });
     }catch(err){
       console.log('Error::'+err);
       res.status(400).send();
     }
   }
-exports.findAllTeachers = async(req,res) => {
+exports.findAllTeachers = async(res) => {
     const query = 'Select * from teacher';
     try{
       await mydb.query(query,(err,results) => {
