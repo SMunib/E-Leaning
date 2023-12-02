@@ -130,25 +130,9 @@ const Courses = ({ setActiveOption, userType }) => {
                   </li>
                 ))}
               </ul>
+              
             ) : (
               <p>No courses enrolled yet.</p>
-            )}
-          </section>
-
-          <section style={{color:'white'}}>
-            <h2>Available Courses</h2>
-            {loading ? (
-              <p>Loading available courses...</p>
-            ) : Object.keys(availableCourses).length > 0 ? (
-              <ul>
-                {availableCourses.map((course) => (
-                  <li key={course.CourseID} onClick={() => handleCourseClick(course)}>
-                    {course.CourseName}{" "}{course.CourseID}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No available courses at the moment.</p>
             )}
           </section>
         </div>

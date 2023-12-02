@@ -1,0 +1,60 @@
+/* styles.css */
+body{
+    color: white;
+  }
+  .adminNav {
+    background-color: #022d62;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px;
+    border-radius: 20px;
+    font-family: 'Urbanist', sans-serif;
+  }
+  
+  .adminNav h1 {
+    margin: 0;
+  }
+  
+  .adminNav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .adminNav li {
+    padding: 0;
+  }
+  
+  .adminNav button {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+  }
+  
+  /* Active (selected) button styles */
+  .adminNav button.active {
+    text-decoration: underline;
+    color: #4FC2D9;
+  }
+  
+  .adminNav .title {
+    display: flex;
+    align-items: center;
+  }
+  
+  .adminNav .logo {
+    width: 40px;
+    margin-right: 10px;
+    border-radius: 50%;
+  }
+  
+  .adminNav .title h1 {
+    margin: 0;
+  }
+  

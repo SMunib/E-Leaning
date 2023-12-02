@@ -90,6 +90,10 @@ html{
     font-weight: 700;
     line-height: normal;
 }
+.login-page button:hover{
+    background-color: #1b5592;
+    cursor: pointer;
+}
 .login-page .radio{
     color: white;
     font-family: Urbanist;

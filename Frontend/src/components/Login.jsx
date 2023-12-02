@@ -26,35 +26,36 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      const response = await fetch('http://localhost:2000/login',{
-        method : 'POST',
-        headers :{
-          'Content-Type':'application/json',
-        },
-        body:JSON.stringify({Email,Password,userType}),
-      });
-      const data = await response.json();
-      if(data.success && data.message === "Login Successful"){
-        localStorage.setItem("token",data.token);
-       // console.log(localStorage.getItem("token"));
-       navigate('/home', { state: { userType } });
-      }else if(data.success && data.message === "admin"){
-        //move to admin page
-      }else{
-        console.log("Validation Error: ", data.error)
-        if(data.message !== "validation error"){
-          setInvalid(true);
-          setErrors("");
-        }else{
-          setErrors(data.error);
-        }
-      }
-    }catch(error){
-      console.log('Error during Login: ',error);
-      setInvalid(true);
-    }
-    //navigate('/home', { state: { userType } });
+    // try{
+    //   const response = await fetch('http://localhost:2000/login',{
+    //     method : 'POST',
+    //     headers :{
+    //       'Content-Type':'application/json',
+    //     },
+    //     body:JSON.stringify({Email,Password,userType}),
+    //   });
+    //   const data = await response.json();
+    //   if(data.success && data.message === "Login Successful"){
+    //     localStorage.setItem("token",data.token);
+    //    // console.log(localStorage.getItem("token"));
+    //    navigate('/home', { state: { userType } });
+    //   }else if(data.success && data.message === "admin"){
+    //     //move to admin page
+    //     navigate('/admin', { state: { userType } });
+    //   }else{
+    //     console.log("Validation Error: ", data.error)
+    //     if(data.message !== "validation error"){
+    //       setInvalid(true);
+    //       setErrors("");
+    //     }else{
+    //       setErrors(data.error);
+    //     }
+    //   }
+    // }catch(error){
+    //   console.log('Error during Login: ',error);
+    //   setInvalid(true);
+    // }
+    navigate('/admin', { state: { userType } });
   }
   
 
