@@ -42,7 +42,7 @@ exports.giveResponse = async(req,res) => {
 }
 
 exports.SendRequest = async(req,res) =>{
-        const Request = req.body.Request;
+        const {Request}= req.body;
         console.log("req: ",Request);
         const query = "Insert into admin set ?";
         console.log(query);

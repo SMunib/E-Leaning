@@ -44,11 +44,18 @@ const Help = () => {
     <div className="help">
       <h1>Help</h1>
       <p>Have a Question? Ask us!</p>
-      <textarea
+      {/* <textarea
         placeholder="Enter your Question here"
         value={Request}
         onChange={handleRequestChange}
-      ></textarea>
+      ></textarea> */}
+      <input
+          type="Request"
+          placeholder="Enter your Question here"
+          className="textbox"
+          value={Request}
+          onChange={handleRequestChange}
+        />
       <button onClick={submitRequest}>Submit</button>
       {message  && (
         <div className="message-container" style = {{color:'red'}}>
