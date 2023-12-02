@@ -21,7 +21,7 @@ function registerValidation(City,Country,PostalCode,AccountNo,FirstName,LastName
     }
     if(userType === "teacher"){
     if(Qualification === ""){error.Qualification = "Field should not be empty"}
-    else{error.Qualification = ""}
+    else{error.Qualification = ""};
 
     if(AccountNo === ""){error.AccountNo = "Field should not be empty"}
     else if(!AccountNo_pattern.test(AccountNo)){error.AccountNo = "Account Number must have 9 digits"}

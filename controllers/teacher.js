@@ -8,8 +8,8 @@ exports.addTeacher = async(req,res)=>{
     const query = "Insert into teacher set ?";
     let hashedPassword = await bcrypt.hash(Password,10);
     try{
-      const results = await queryAsync(query,{FirstName:FirstName,LastName:LastName,Email:Email,Password:hashedPassword,Qualification:Qualification,Country:Country,City:City,PostalCode:PostalCode,AccountNo:AccountNo})
-        if(!results.length){
+        await mydb.query(query,{FirstName:FirstName,LastName:LastName,Email:Email,Password:hashedPassword,Qualification:Qualification,Country:Country,City:City,PostalCode:PostalCode,AccountNo:AccountNo},(err,results)=>{
+        if(err){
           console.log('Error: Failed to insert into database: '+err);
           return res.status(400).json({message:err.message});
         }
@@ -20,6 +20,7 @@ exports.addTeacher = async(req,res)=>{
           data:{
             email:Email,
           },
+        });
         });
     }catch(err){
       console.log('Error::'+err);
@@ -89,7 +90,7 @@ exports.findspecificTeacher = async(req,res) => {
     }
   }
 exports.updateTeacherInfo = async(req,res) => {
-    const allowedAttributes = ['FirstName','LastName','Password','Country','City','PostalCode','AccountNo'];
+    const allowedAttributes = ['FirstName','LastName','Password','Country','City','PostalCode','AccountNo','Qualification'];
     const Email = req.body.Email;
     const updateAttributes = Object.keys(req.body)
       .filter(attr => allowedAttributes.includes(attr))

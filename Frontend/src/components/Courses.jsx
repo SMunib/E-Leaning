@@ -22,7 +22,9 @@ const Courses = ({ setActiveOption }) => {
         if (enrolledData.success) {
           setEnrolledCourses(enrolledData.data);
           console.log(enrolledData.data);
-        } else { alert("error"); }
+        } else { 
+          // alert("error"); 
+        }
 
         // Replace 'https://api.example.com/available-courses' with your actual API endpoint for fetching available courses
         const availableResponse = await fetch('http://localhost:2000/course/find', {
