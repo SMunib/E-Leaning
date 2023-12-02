@@ -42,7 +42,6 @@ const Profile = () => {
         setLoading(false);
       }
     };
-
     // Call the fetchData function
     fetchData();
   }, []); // The empty dependency array ensures that useEffect runs only once,
