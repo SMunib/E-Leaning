@@ -42,12 +42,19 @@ exports.giveResponse = async(req,res) => {
 }
 
 exports.SendRequest = async(req,res) =>{
-        const {Request} = req.body;
-        const query = 'Insert into admin set ?';
+        const Request = req.body.Request;
+        console.log("req: ",Request);
+        const query = "Insert into admin set ?";
+        console.log(query);
         try{
-            const results = await queryAsync(query,[Request]);
-            if(!results.length){return res.status(401).json({message:'Error while sending'})};
-            res.status(201).json({success:true,message:'Request Sent',data:results});
+            await queryAsync(query,[Request],(err)=>{
+                if(err){
+                    console.log('Error: Failed to insert into database: '+err);
+                    return res.status(400).json({message:err.message});
+                  }
+                // if(!results.length){return res.status(401).json({message:'Error while sending'})};
+                res.status(201).json({success:true,message:'Request Sent'});
+            });
         }catch(err){
             console.log("error"+err);
             return res.status(500).send();
