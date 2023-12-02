@@ -34,8 +34,8 @@ const Courses = ({ setActiveOption }) => {
         const availableData = await availableResponse.json();
         if (availableData.success) {
           setAvailableCourses(availableData.data);
-          console.log(availableData.length);
-          console.log(availableData.success);
+          // console.log(availableData.length);
+          // console.log(availableData.success);
         } else { alert("Error"); }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -70,8 +70,12 @@ const Courses = ({ setActiveOption }) => {
     <div className="courses">
       {selectedCourse ? (
         <div>
-          <h2>{selectedCourse.title}</h2>
+          <h2>{selectedCourse.CourseName}</h2>
           <p>Course Details: {selectedCourse.details}</p>
+          <p>Course Code: {selectedCourse.CourseID}</p>
+          <p>Course Modules: {selectedCourse.modules} </p>
+          <p>Course Duration: {selectedCourse.duration}</p>
+
           {/* Add more course details here */}
           <button onClick={handleGoBack}>Go Back</button>
         </div>
@@ -81,7 +85,7 @@ const Courses = ({ setActiveOption }) => {
             <h2>Enrolled Courses</h2>
             {loading ? (
               <p>Loading enrolled courses...</p>
-            ) : enrolledCourses.length > 0 ? (
+            ) : Object.keys(enrolledCourses).length > 0 ? (
               <ul>
                 {enrolledCourses.map((course) => (
                   <li key={course.CourseID} onClick={() => handleCourseClick(course)}>
@@ -94,17 +98,15 @@ const Courses = ({ setActiveOption }) => {
             )}
           </section>
 
-          <section>
+          <section style={{color:'white'}}>
             <h2>Available Courses</h2>
             {loading ? (
               <p>Loading available courses...</p>
-            ) : availableCourses.length > 0 ? (
+            ) : Object.keys(availableCourses).length > 0 ? (
               <ul>
                 {availableCourses.map((course) => (
                   <li key={course.CourseID} onClick={() => handleCourseClick(course)}>
-                    {course.CourseName}
-                    {course.modules}
-                    {course.duration}
+                    {course.CourseName}{" "}{course.CourseID}
                   </li>
                 ))}
               </ul>

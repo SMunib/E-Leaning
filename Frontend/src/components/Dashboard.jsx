@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 
-const token = localStorage.getItem('token');
 // have to add API URLS and if want to add some info than add it in sections
 const Dashboard = () => {
   const [userName, setUserName] = useState("");
@@ -11,8 +10,9 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem('token');
         // Replace 'https://api.example.com/user'
-        const userResponse = await fetch("https://localhost:2000/teacher/findspecifc",{
+        const userResponse = await fetch("http://localhost:2000/teacher/findspecific",{
           method:'GET',
           headers:{
             'Authorization':`Bearer ${token}`,
@@ -20,15 +20,27 @@ const Dashboard = () => {
           },
         });
         const userData = await userResponse.json();
-
+        if(userData.success){
+          setUserName(userData.data);
+        }else{
+          alert("error");
+        }
         // Replace 'https://api.example.com/enrolled-courses'
         const coursesResponse = await fetch(
-          "https://api.example.com/enrolled-courses",
+          "http://localhost:2000/reg_course/findforteacher",{
+            method:'GET',
+            headers:{
+              'Authorization':`Bearer ${token}`,
+            }
+          }
         );
         const coursesData = await coursesResponse.json();
+        if(coursesData.success){
+          setEnrolledCourses(coursesData.data);
+        }else{
+          alert("error in courses");
+        }
 
-        setUserName(userData.FirstName);
-        setEnrolledCourses(coursesData.courses);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -49,7 +61,7 @@ const Dashboard = () => {
           border: "1px solid #2e8b57",
         }}
       >
-        {loading ? "Loading..." : `Hi ${userName}! Welcome to Knowledge Net`}
+        {loading ? "Loading..." : userName ? `Hi ${userName.FirstName} ! Welcome to Knowledge Net` : "User Data not available"}
       </h1>
 
       <section>

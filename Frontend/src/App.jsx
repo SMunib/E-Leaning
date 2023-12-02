@@ -68,7 +68,7 @@ render() {
         <Routes> 
                 <Route exact path='/' Component={Login}/>
                 <Route exact path='/Courses' Component={Courses}/>
-                <Route path="/home" Component={Home} />
+                <Route path="/home/*" Component={Home} />
                 <Route path="/help" Component={Help} />
                 <Route path="/settings" Component={Settings} />
                 <Route path="/log out" Component={Logout} />

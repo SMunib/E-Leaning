@@ -21,7 +21,7 @@ const Profile = () => {
         console.log(token);
         // Replace the URL with your actual backend API endpoint
         // Changes here Aziz
-        const response = await fetch("http://localhost:2000/teacher/findspecifc", {
+        const response = await fetch("http://localhost:2000/teacher/findspecific", {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -30,10 +30,10 @@ const Profile = () => {
         });
         const data = await response.json();
         if (data.success) {
-          console.log(data.data);
-          setProfileData(data.results);
+          // console.log(data.data);
+          setProfileData(data.data);
         } else {
-          console.log(data.message);
+          // console.log(data.message);
           alert("Error in fetching data");
         }
       } catch (error) {
@@ -53,14 +53,14 @@ const Profile = () => {
         <p>Loading profile data...</p>
       ) : profileData ? (
         <div>
-          <p>First Name: {profileData.FirstName}</p>
-          <p>Last Name: {profileData.LastName}</p>
-          <p>Email: {profileData.Email}</p>
-          <p>Qualification: {profileData.Qualification}</p>
-          <p>Account Number: {profileData.AccountNo}</p>
-          <p>City: {profileData.City}</p>
-          <p>Country: {profileData.Country}</p>
-          <p>Postal Code: {profileData.PostalCode}</p>
+          <p>First Name: {profileData[0].FirstName}</p>
+          <p>Last Name: {profileData[0].LastName}</p>
+          <p>Email: {profileData[0].Email}</p>
+          <p>Qualification: {profileData[0].Qualification}</p>
+          <p>Account Number: {profileData[0].AccountNo}</p>
+          <p>City: {profileData[0].City}</p>
+          <p>Country: {profileData[0].Country}</p>
+          <p>Postal Code: {profileData[0].PostalCode}</p>
         </div>
       ) : (
         <p>Error loading profile data</p>

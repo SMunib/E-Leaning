@@ -2,6 +2,7 @@ const mydb = require('../routes/db');
 const util = require('util');
 const queryAsync = util.promisify(mydb.query).bind(mydb);
 
+//have to use a join statement
 exports.checkEnrolledCoursesTeacher =  async(req,res)=>{
     const id = req.userid;
     const query = "select * from reg_course where TeacherID =?";
