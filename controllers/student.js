@@ -1,5 +1,8 @@
 const mydb = require('../routes/db');
 const bcrypt = require('bcryptjs');
+const util = require('util');
+const queryAsync = util.promisify(mydb.query).bind(mydb);
+
 
 exports.registerStudent = async(req,res)=>{
     const {FirstName,LastName,Email,Password,UniversityName,Country,City,PostalCode} = req.body;
@@ -46,24 +49,25 @@ exports.findallStudents = async(req,res) => {
     }
   }
   exports.findspecificStudent = async(req,res) => {
-    const id = req.params.StudentID;
+    const id = req.userid;
     const query = 'Select * from student where StudentID = ?';
     try{
-      await mydb.query(query,[id],(err,results) => {
-        if(err){
-          console.log('Failed to execute query: '+err);
-          return res.status(400).json({message:err.message});
+      // await mydb.query(query,[id],(err,results) => {
+        const results = await queryAsync(query,[id]);
+        if(!results.length){
+          console.log('Failed to execute query: ');
+          return res.status(400).json({message:"Error"});
         }
-        if(!results){
-          console.log('Id does not exist ');
-          return res.status(404).json({message:'Error: Id Does not Exist in the Table'});
-        }
+        // if(!results){
+        //   console.log('Id does not exist ');
+        //   return res.status(404).json({message:'Error: Id Does not Exist in the Table'});
+        // }
         res.status(201).json({
           success:true,
           message:'data found',
           data:results,
         });
-      });
+      // });
     }catch(err){
       console.log('Error::'+err);
       res.status(500).send();

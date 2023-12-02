@@ -9,7 +9,7 @@ exports.verifyToken = (req,res,next) =>{
     // console.log("JWTSecretKey")
     jwt.verify(tokenWithoutBearer,'JWTSecretKey',(err,decoded)=> {
         if(err){
-            console.log(err);
+            console.log("Error: ",err);
             return res.status(401).json({message:"UnAuthorized"});}
         // console.log(decoded.userid);
         req.userid = decoded.userid;

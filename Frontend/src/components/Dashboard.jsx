@@ -25,20 +25,32 @@ const Dashboard = ({userType}) => {
             setEnrolledCourses(enrolledData.data);
             console.log(enrolledData.data);
           } else { alert("error"); }
-  
-          // Replace 'https://api.example.com/available-courses' with your actual API endpoint for fetching available courses
-          const availableResponse = await fetch('http://localhost:2000/course/find', {
+          const userresponse = await fetch("http://localhost:2000/teacher/findspecific", {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
-            }
+              'Content-Type': 'application/json',
+            },
           });
-          const availableData = await availableResponse.json();
-          if (availableData.success) {
-            setAvailableCourses(availableData.data);
-            // console.log(availableData.length);
-            // console.log(availableData.success);
-          } else { alert("Error"); }
+          const userdata = await userresponse.json();
+          if(userdata.success){
+            setUserName(userdata.data);
+            console.log(userdata.data);
+            console.log(userName);
+          }else{alert('error')};
+          // // Replace 'https://api.example.com/available-courses' with your actual API endpoint for fetching available courses
+          // const availableResponse = await fetch('http://localhost:2000/course/find', {
+          //   method: 'GET',
+          //   headers: {
+          //     'Authorization': `Bearer ${token}`,
+          //   }
+          // });
+          // const availableData = await availableResponse.json();
+          // if (availableData.success) {
+          //   setAvailableCourses(availableData.data);
+          //   // console.log(availableData.length);
+          //   // console.log(availableData.success);
+          // } else { alert("Error"); }
         } catch (error) {
           console.error('Error fetching data:', error);
         } finally {
@@ -60,7 +72,17 @@ const Dashboard = ({userType}) => {
             setEnrolledCourses(enrolledData.data);
             console.log(enrolledData.data);
           } else { alert("error"); }
-  
+          const userresponse = await fetch("http://localhost:2000/student/findspecific", {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          const userdata = await userresponse.json();
+          if(userdata.success){
+            setUserName(userdata.data);
+          }else{alert('error')};
           // Replace 'https://api.example.com/available-courses' with your actual API endpoint for fetching available courses
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -83,7 +105,7 @@ const Dashboard = ({userType}) => {
           border: "1px solid #2e8b57",
         }}
       >
-        {loading ? "Loading..." : userName ? `Hi ${userName.FirstName} ! Welcome to Knowledge Net` : "User Data not available"}
+        {loading ? "Loading..." : userName ? `Hi ${userName[0].FirstName} ! Welcome to Knowledge Net` : "User Data not available"}
       </h1>
 
       <section>

@@ -10,10 +10,16 @@ const Requests = () => {
     // Fetch questions from the database when the component mounts
     const fetchQuestions = async () => {
       try {
-        const response = await fetch('your_database_api_endpoint/questions');
+        const response = await fetch('http://localhost:2000/admin/Request',{
+          method:'GET',
+          headers:{
+            'content':'application/json',
+          }
+        });
         const data = await response.json();
         // Assuming the response structure is an array of questions
-        setQuestions(data);
+        setQuestions(data.data);
+        console.log(questions);
         // Initialize newAnswers array with empty strings for each question
         setNewAnswers(data.map(() => ''));
       } catch (error) {
@@ -30,7 +36,7 @@ const Requests = () => {
       const answer = newAnswers[questionId - 1];
 
       // Send a request to your backend to update the answer in the database
-      const response = await fetch('your_database_api_endpoint/answer', {
+      const response = await fetch('http://localhost:2000/admin/giveResponse', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,7 +50,7 @@ const Requests = () => {
       if (data.success) {
         setQuestions((prevQuestions) =>
           prevQuestions.map((question) =>
-            question.id === questionId ? { ...question, answer } : question
+            question.RequestID === questionId ? { ...question, answer } : question
           )
         );
       } else {
@@ -55,7 +61,7 @@ const Requests = () => {
     }
   };
 
-  const unansweredQuestions = questions.filter((question) => !question.answer);
+  const unansweredQuestions = questions.filter((question) => !question.Response);
 
   return (
     <div className='requests-container'>
@@ -65,23 +71,23 @@ const Requests = () => {
       ) : (
         <ul>
           {unansweredQuestions.map((question) => (
-            <li key={question.id}>
-              <p>{question.text}</p>
-              {question.answer ? (
-                <p><strong>Admin's Answer:</strong> {question.answer}</p>
+            <li key={question.RequestID}>
+              <p>{question.Request}</p>
+              {question.Response ? (
+                <p><strong>Admin's Answer:</strong> {question.Response}</p>
               ) : (
                 <div>
                   <input
                     type="text"
                     placeholder="Type your answer"
-                    value={newAnswers[question.id - 1]}
+                    value={newAnswers[question.RequestID - 1]}
                     onChange={(e) => {
                       const updatedAnswers = [...newAnswers];
-                      updatedAnswers[question.id - 1] = e.target.value;
+                      updatedAnswers[question.RequestID - 1] = e.target.value;
                       setNewAnswers(updatedAnswers);
                     }}
                   />
-                  <button onClick={() => handleAnswer(question.id)}>Answer</button>
+                  <button onClick={() => handleAnswer(question.RequestID)}>Answer</button>
                 </div>
               )}
             </li>

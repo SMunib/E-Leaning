@@ -71,7 +71,6 @@ exports.checkLoginStudent = async(req,res) => {
         if(error){
             console.log(error);
         }
-        
         if(results.length === 0 ){return res.json({
             success : false,
             message : 'Email or password is incorrect',
@@ -96,7 +95,7 @@ exports.checkLoginStudent = async(req,res) => {
 exports.checkLoginTeacher = async(req,res) => {
     const {Email , Password} = req.body;
 //Check if Email exists in database
-    db.query('Select * from teacher where Email = ?',[Email],async(error,results)=>{
+     db.query('Select * from teacher where Email = ?',[Email],async(error,results)=>{
         if(error){
             console.log(error);
         }

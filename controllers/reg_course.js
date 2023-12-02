@@ -5,7 +5,7 @@ const queryAsync = util.promisify(mydb.query).bind(mydb);
 //have to use a join statement
 exports.checkEnrolledCoursesTeacher =  async(req,res)=>{
     const id = req.userid;
-    const query = "select * from reg_course where TeacherID =?";
+    const query = "select * from reg_course join course on reg_course.CourseID=course.CourseID where reg_course.TeacherID =?";
     try{
         const results = await queryAsync(query,[id]);
         if(!results.length){return res.status(401).json({message:"ID does not exist"});}
@@ -22,7 +22,7 @@ exports.checkEnrolledCoursesTeacher =  async(req,res)=>{
 };
 exports.checkEnrolledCoursesStudent =  async(req,res)=>{
     const id = req.userid;
-    const query = "select * from reg_course where StudentID =?";
+    const query = "select * from reg_course join course on reg_course.CourseID=course.CourseID where reg_course.StudentID =?";
     try{
         const results = await queryAsync(query,[id]);
         if(!results.length){return res.status(401).json({message:"ID does not exist"});}

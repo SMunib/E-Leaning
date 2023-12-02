@@ -6,7 +6,7 @@ exports.CheckRequests = async(req,res) =>{
     const query = 'Select RequestID,Request from admin';
     try{
         const results = await queryAsync(query);
-        if(!results.length){return res.status(401).json({message:'No requests found'})};
+        if(!results.length){console.log("error");return res.status(401).json({message:'No requests found'})};
         return res.status(201).json({success:true,message:'Requests Found',data:results});
     }catch(err){
         console.log("error"+err);
@@ -29,10 +29,10 @@ exports.CheckResponse = async(req,res) =>{
 
 exports.giveResponse = async(req,res) => {
     //get requestID somehow
-    const {Response} = req.body;
+    const {answer,questionId} = req.body;
     const query = 'Update admin set Response where RequestID = ?';
     try{
-        const results = await queryAsync(query,[Response,RequestID]);
+        const results = await queryAsync(query,[answer,questionId]);
         if(!results.length){return res.status(401).json({message:'Error while sending'})};
         res.status(201).json({success:true,message:'Response Recorded',data:results});
     }catch(err){
