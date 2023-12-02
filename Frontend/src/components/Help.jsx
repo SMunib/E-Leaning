@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Help.css";
 
-const Help = () => {
+const Help = ({userType}) => {
   const [Request, setRequest] = useState("");
   const [message, setMessage] = useState("");
   // Function to handle the user's Request input
@@ -44,18 +44,18 @@ const Help = () => {
     <div className="help">
       <h1>Help</h1>
       <p>Have a Question? Ask us!</p>
-      {/* <textarea
+      <textarea
         placeholder="Enter your Question here"
         value={Request}
         onChange={handleRequestChange}
-      ></textarea> */}
-      <input
+      ></textarea>
+      {/* <input
           type="Request"
           placeholder="Enter your Question here"
           className="textbox"
           value={Request}
           onChange={handleRequestChange}
-        />
+        /> */}
       <button onClick={submitRequest}>Submit</button>
       {message  && (
         <div className="message-container" style = {{color:'red'}}>

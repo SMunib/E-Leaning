@@ -1,0 +1,37 @@
+/* Responses.css */
+
+.responses-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(145, 112, 112, 0.1);
+    font-family: 'Urbanist', sans-serif;
+  }
+  
+  .responses-container h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+  
+  .responses-container ul {
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+    width: 100%; /* Ensure the list takes full width */
+    border-radius: 10px;
+  }
+  
+  .responses-container li {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 80%; /* Adjust the width of the answer items as needed */
+    border-radius: 10px;
+    margin: 20px auto;
+  }
+  
+  /* You can add more styles for input and button if needed */
+  

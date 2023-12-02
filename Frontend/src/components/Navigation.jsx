@@ -9,7 +9,7 @@ import Dashboard from './Dashboard';
 import Logout from './Logout';
 import Help from './Help';
 
-const Navigation = () => {
+const Navigation = ({userType}) => {
   const [selectedOption, setSelectedOption] = useState("Dashboard");
 
   const handleOptionClick = (option) => {
@@ -76,12 +76,12 @@ const Navigation = () => {
       </nav>
 
       <div className='choice'>
-        {selectedOption === "Dashboard" && <Dashboard />}
-        {selectedOption === "Courses" && <Courses />}
-        {selectedOption === "Profile" && <Profile />}
-        {selectedOption === "Help" && <Help />}
-        {selectedOption === "Logout" && <Logout />}
-        {selectedOption === "AvailableCourses" && <AvailableCourses />}
+        {selectedOption === "Dashboard" && <Dashboard userType = {userType}/>}
+        {selectedOption === "Courses" && <Courses userType = {userType}/>}
+        {selectedOption === "Profile" && <Profile userType = {userType}/>}
+        {selectedOption === "Help" && <Help userType = {userType}/>}
+        {selectedOption === "Logout" && <Logout/>}
+        {selectedOption === "AvailableCourses" && <AvailableCourses userType = {userType}/>}
         {/* Add other conditions for different components */}
       </div>
     </div>

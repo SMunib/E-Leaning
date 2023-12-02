@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "./Courses.css";
 
-const Courses = ({ setActiveOption }) => {
+const Courses = ({ setActiveOption, userType }) => {
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [availableCourses, setAvailableCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -22,9 +22,7 @@ const Courses = ({ setActiveOption }) => {
         if (enrolledData.success) {
           setEnrolledCourses(enrolledData.data);
           console.log(enrolledData.data);
-        } else { 
-          // alert("error"); 
-        }
+        } else { alert("error"); }
 
         // Replace 'https://api.example.com/available-courses' with your actual API endpoint for fetching available courses
         const availableResponse = await fetch('http://localhost:2000/course/find', {
@@ -95,25 +93,9 @@ const Courses = ({ setActiveOption }) => {
                   </li>
                 ))}
               </ul>
+              
             ) : (
               <p>No courses enrolled yet.</p>
-            )}
-          </section>
-
-          <section style={{color:'white'}}>
-            <h2>Available Courses</h2>
-            {loading ? (
-              <p>Loading available courses...</p>
-            ) : Object.keys(availableCourses).length > 0 ? (
-              <ul>
-                {availableCourses.map((course) => (
-                  <li key={course.CourseID} onClick={() => handleCourseClick(course)}>
-                    {course.CourseName}{" "}{course.CourseID}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No available courses at the moment.</p>
             )}
           </section>
         </div>

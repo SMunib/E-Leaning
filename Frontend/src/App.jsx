@@ -59,6 +59,7 @@ import Register from './components/Register';
 import RegisterSuccess from './components/RegisterSuccess';
 import RegisterDetails from './components/RegisterDetails';
 import ResetPass from './components/ResetPass'
+import admin from './components/admin';
   
 class App extends Component { 
 render() { 
@@ -76,6 +77,7 @@ render() {
                 <Route path="/register-details" Component={RegisterDetails} />
                 <Route path="/register-success" Component={RegisterSuccess} />
                 <Route path="/reset-pass" Component={ResetPass} />
+                <Route path="/admin" Component={admin} />
         </Routes> 
         </div> 
     </Router> 
