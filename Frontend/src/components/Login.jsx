@@ -38,7 +38,7 @@ export default function Login() {
       if(data.success && data.message === "Login Successful"){
         localStorage.setItem("token",data.token);
        // console.log(localStorage.getItem("token"));
-        navigate('/home')
+       navigate('/home', { state: { userType } });
       }else if(data.success && data.message === "admin"){
         //move to admin page
       }else{
@@ -54,7 +54,7 @@ export default function Login() {
       console.log('Error during Login: ',error);
       setInvalid(true);
     }
-    //navigate('/home');
+    //navigate('/home', { state: { userType } });
   }
   
 

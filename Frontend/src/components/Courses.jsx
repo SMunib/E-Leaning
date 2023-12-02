@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "./Courses.css";
 
-const Courses = ({ setActiveOption }) => {
+const Courses = ({ setActiveOption, userType }) => {
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [availableCourses, setAvailableCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -9,38 +9,75 @@ const Courses = ({ setActiveOption }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        // Replace 'https://api.example.com/enrolled-courses' with your actual API endpoint for fetching enrolled courses
-        const enrolledResponse = await fetch('http://localhost:2000/reg_course/findforteacher', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          }
-        });
-        const enrolledData = await enrolledResponse.json();
-        if (enrolledData.success) {
-          setEnrolledCourses(enrolledData.data);
-          console.log(enrolledData.data);
-        } else { alert("error"); }
-
-        // Replace 'https://api.example.com/available-courses' with your actual API endpoint for fetching available courses
-        const availableResponse = await fetch('http://localhost:2000/course/find', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          }
-        });
-        const availableData = await availableResponse.json();
-        if (availableData.success) {
-          setAvailableCourses(availableData.data);
-          // console.log(availableData.length);
-          // console.log(availableData.success);
-        } else { alert("Error"); }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
+      if(userType === "teacher"){
+        try {
+          const token = localStorage.getItem('token');
+          // Replace 'https://api.example.com/enrolled-courses' with your actual API endpoint for fetching enrolled courses
+          const enrolledResponse = await fetch('http://localhost:2000/reg_course/findforteacher', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            }
+          });
+          const enrolledData = await enrolledResponse.json();
+          if (enrolledData.success) {
+            setEnrolledCourses(enrolledData.data);
+            console.log(enrolledData.data);
+          } else { alert("error"); }
+  
+          // Replace 'https://api.example.com/available-courses' with your actual API endpoint for fetching available courses
+          const availableResponse = await fetch('http://localhost:2000/course/find', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            }
+          });
+          const availableData = await availableResponse.json();
+          if (availableData.success) {
+            setAvailableCourses(availableData.data);
+            // console.log(availableData.length);
+            // console.log(availableData.success);
+          } else { alert("Error"); }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        } finally {
+          setLoading(false);
+        }
+      }
+      else if(userType === "student"){
+        try {
+          const token = localStorage.getItem('token');
+          // Replace 'https://api.example.com/enrolled-courses' with your actual API endpoint for fetching enrolled courses
+          const enrolledResponse = await fetch('http://localhost:2000/reg_course/findforstudent', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            }
+          });
+          const enrolledData = await enrolledResponse.json();
+          if (enrolledData.success) {
+            setEnrolledCourses(enrolledData.data);
+            console.log(enrolledData.data);
+          } else { alert("error"); }
+  
+          // Replace 'https://api.example.com/available-courses' with your actual API endpoint for fetching available courses
+          const availableResponse = await fetch('http://localhost:2000/course/find', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            }
+          });
+          const availableData = await availableResponse.json();
+          if (availableData.success) {
+            setAvailableCourses(availableData.data);
+            // console.log(availableData.length);
+            // console.log(availableData.success);
+          } else { alert("Error"); }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        } finally {
+          setLoading(false);
+        }
       }
     };
 
