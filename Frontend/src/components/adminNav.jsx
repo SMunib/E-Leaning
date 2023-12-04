@@ -5,6 +5,8 @@ import './styles.css';
 import Requests from './Requests';
 import Responses from './Responses';
 import Logout from './Logout';
+//added here 
+import AddCourse from "./AddCourse";
 
 const AdminNav = ({userType}) => {
   const [selectedOption, setSelectedOption] = useState("Requests");
@@ -37,6 +39,15 @@ const AdminNav = ({userType}) => {
               Responses
             </button>
           </li>
+          //added here
+            <li>
+            <button
+              className={selectedOption === "AddCourse" ? "active" : ""}
+              onClick={() => handleOptionClick("AddCourse")}
+            >
+              Add Course
+            </button>
+          </li>
           <li>
             <button
               className={selectedOption === "Logout" ? "active" : ""}
@@ -52,6 +63,8 @@ const AdminNav = ({userType}) => {
         {selectedOption === "Requests" && <Requests/>}
         {selectedOption === "Responses" && <Responses/>}
         {selectedOption === "Logout" && <Logout/>}
+        //added here
+        {selectedOption === "AddCourse" && <AddCourse />}
         {/* Add other conditions for different components */}
       </div>
     </div>
