@@ -9,10 +9,12 @@ const jwt = require('./verifyJwt');
 
 router
   .route('/findforteacher')
-  .get(jwt.verifyToken,reg_courseController.checkEnrolledCoursesTeacher);
+  .get(jwt.verifyToken,reg_courseController.checkEnrolledCoursesTeacher)
+  .post(jwt.verifyToken,reg_courseController.EnrollTeacher);
 
 router
   .route('/findforstudent')
-  .get(jwt.verifyToken,reg_courseController.checkEnrolledCoursesStudent);
+  .get(jwt.verifyToken,reg_courseController.checkEnrolledCoursesStudent)
+  .post(jwt.verifyToken,reg_courseController.EnrollStudent);
 
 module.exports = router;

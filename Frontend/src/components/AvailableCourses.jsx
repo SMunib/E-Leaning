@@ -102,8 +102,50 @@ const Courses = ({ setActiveOption, userType }) => {
     setSelectedCourse(null);
     setActiveOption(null);
   };
-  const handleEnroll = () => {
-    
+  const handleEnroll = async (id) => {
+    if(userType === "teacher"){
+      try{
+        const token = localStorage.getItem('token');
+        const Response = await fetch('http://localhost:2000/reg_course/findforteacher', {
+            method: 'Post',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type':'application/json', 
+            },
+            body : JSON.stringify({id,userType}),
+          });
+          const data = await Response.json();
+          if(data.success){
+            console.log("Teacher Enrolled");
+            alert('Enrollment Successful');
+          }else{
+            alert("Enrollment Failed: ",data.message);
+          }
+      }catch(error){
+        console.error('Error fetching data:', error);
+      }
+    }if(userType === "student"){
+      try{
+        const token = localStorage.getItem('token');
+        const Response = await fetch('http://localhost:2000/reg_course/findforstudent', {
+            method: 'Post',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type':'application/json', 
+            },
+            body : JSON.stringify({id,userType}),
+          });
+          const data = await Response.json();
+          if(data.success){
+            console.log("Student Enrolled");
+            alert('Enrollment Successful');
+          }else{
+            alert("Enrollment Failed: ",data.message);
+          }
+      }catch(error){
+        console.error('Error fetching data:', error);
+      }
+    }
   };
 
   return (
@@ -118,7 +160,7 @@ const Courses = ({ setActiveOption, userType }) => {
 
           {/* Add more course details here */}
           <button onClick={handleGoBack}>Go Back</button>
-          <button onClick={handleEnroll}>Enroll</button>
+          <button onClick={() => handleEnroll(selectedCourse.CourseID,selectedCourse.CourseName)}>Enroll</button>
         </div>
       ) : (
         <div>

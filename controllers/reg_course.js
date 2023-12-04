@@ -36,3 +36,37 @@ exports.checkEnrolledCoursesStudent =  async(req,res)=>{
         res.status(500).send();
     }
 };
+
+exports.EnrollTeacher = async(req,res) =>{
+    const Userid = req.userid;
+    const{id,userType} = req.body;
+    const query = `Update reg_course set ${userType}ID = ? where CourseID = ?`;
+    console.log(query);
+    try{
+        const results = await queryAsync(query, [Userid ,id ]);
+        if(results.affectedRows === 0){
+            return res.status(400).json({success:false,message:"Course not found"});
+        }
+        return res.status(200).json({success:true,message:"Teacher Enrolled Successfully"});
+    }catch(error){
+        console.log("error" + error);
+        res.status(500).send();
+    }
+}
+
+exports.EnrollStudent = async(req,res) =>{
+    const Userid = req.userid;
+    const{id,userType} = req.body;
+    const query = `Update reg_course set ${userType}ID = ? where CourseID = ? AND TeacherID  is not null`;
+    console.log(query);
+    try{
+        const results = await queryAsync(query, [Userid ,id ]);
+        if(results.affectedRows === 0){
+            return res.status(400).json({success:false,message:"Course not found or Teacher ID is null"});
+        }
+        return res.status(200).json({success:true,message:"Student Enrolled Successfully"});
+    }catch(error){
+        console.log("error" + error);
+        res.status(500).send();
+    }
+}
