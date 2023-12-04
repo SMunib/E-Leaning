@@ -161,7 +161,7 @@ const Courses = ({ setActiveOption, userType }) => {
 
           {/* Add more course details here */}
           <button onClick={handleGoBack}>Go Back</button>
-          <button onClick={() => handleEnroll(selectedCourse.CourseID,selectedCourse.CourseName)}>Enroll</button>
+          <button onClick={() => handleEnroll(selectedCourse.CourseID)}>Enroll</button>
         </div>
       ) : (
         <div>

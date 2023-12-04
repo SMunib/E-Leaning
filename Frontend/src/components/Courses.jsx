@@ -131,7 +131,7 @@ const RegisteredCourses = ({  userType }) => {
         {[...Array(selectedCourse.modules)].map((_, index) => (
           <div key={index}>
             <h4>Module {index + 1}</h4>
-            <p>this is the {index+1}th module</p>
+            {/* <p>Module Number: {index+1}</p> */}
             <ReactPlayer url={videoUrls[index]} />
             <p>Quiz {index + 1}: </p>
             {/* Add more details for each module if needed */}
