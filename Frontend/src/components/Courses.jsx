@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import "./Courses.css";
+import ReactPlayer from 'react-player'
 
-const Courses = ({ setActiveOption, userType }) => {
+const RegisteredCourses = ({  userType }) => {
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [availableCourses, setAvailableCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [videoUrls, setVideoUrls] = useState([]);
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,6 +100,14 @@ const Courses = ({ setActiveOption, userType }) => {
   const handleCourseClick = (course) => {
     // Set the selected course
     setSelectedCourse(course);
+
+    const videos = [ //where the urls are stored
+    'https://www.youtube.com/watch?v=LXb3EKWsInQ',
+    'https://www.youtube.com/watch?v=7KDRqBpT8NA&ab_channel=JSSolutions',
+    'https://www.youtube.com/watch?v=mHPno0osqzY',
+    // Add more URLs as needed
+  ];
+    setVideoUrls(videos);
   };
 
   const handleGoBack = () => {
@@ -113,6 +124,24 @@ const Courses = ({ setActiveOption, userType }) => {
           <p>Course Code: {selectedCourse.CourseID}</p>
           <p>Course Modules: {selectedCourse.modules} </p>
           <p>Course Duration: {selectedCourse.duration}</p>
+          {typeof selectedCourse.modules === 'number' && selectedCourse.modules > 0 ? (
+      <div>
+        <h3>Course Modules:</h3>
+        {/* Use a loop to generate the specified number of headings */}
+        {[...Array(selectedCourse.modules)].map((_, index) => (
+          <div key={index}>
+            <h4>Module {index + 1}</h4>
+            <p>this is the {index+1}th module</p>
+            <ReactPlayer url={videoUrls[index]} />
+            <p>Quiz {index + 1}: </p>
+            {/* Add more details for each module if needed */}
+            {/* Additional module details go here */}
+          </div>
+        ))}
+      </div>
+    ) : (
+      <p>No modules available for this course.</p>
+    )}
 
           {/* Add more course details here */}
           <button onClick={handleGoBack}>Go Back</button>
@@ -142,4 +171,4 @@ const Courses = ({ setActiveOption, userType }) => {
   );
 };
 
-export default Courses;
+export default RegisteredCourses;

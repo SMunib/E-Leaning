@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "./Courses.css";
+import ReactPlayer from 'react-player'
 
 const Courses = ({ setActiveOption, userType }) => {
   // const [enrolledCourses, setEnrolledCourses] = useState([]);
