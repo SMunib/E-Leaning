@@ -17,11 +17,14 @@ const Requests = () => {
           }
         });
         const data = await response.json();
+        if(data.success){
+          setQuestions(data.data);
+          setNewAnswers(data.data.map(() => ''));
+          console.log(data.data);
+        } 
         // Assuming the response structure is an array of questions
-        setQuestions(data.data);
         // console.log(questions);
-        // Initialize newAnswers array with empty strings for each question
-        setNewAnswers(data.data.map(() => ''));
+        // Initialize newAnswers array with empty strings for each questio
       } catch (error) {
         console.error('Error fetching questions:', error);
       }
@@ -31,6 +34,7 @@ const Requests = () => {
   }, []);
 
   const handleAnswer = async (questionId) => {
+    // console.log(questionId);
     try {
       // Get the answer for the current question
       const answer = newAnswers[questionId - 1];
@@ -71,23 +75,23 @@ const Requests = () => {
       ) : (
         <ul>
           {unansweredQuestions.map((question) => (
-            <li key={question.RequestID}>
-              <p>{question.Request}</p>
-              {question.Response ? (
-                <p><strong>Admin's Answer:</strong> {question.Response}</p>
+            <li key={question.ID}>
+              <p>{question.Requests}</p>
+              {question.Responses ? (
+                <p><strong>Admin's Answer:</strong> {question.Responses}</p>
               ) : (
                 <div>
                   <input
                     type="text"
                     placeholder="Type your answer"
-                    value={newAnswers[question.RequestID - 1]}
+                    value={newAnswers[question.ID - 1]}
                     onChange={(e) => {
                       const updatedAnswers = [...newAnswers];
-                      updatedAnswers[question.RequestID - 1] = e.target.value;
+                      updatedAnswers[question.ID - 1] = e.target.value;
                       setNewAnswers(updatedAnswers);
                     }}
                   />
-                  <button onClick={() => handleAnswer(question.RequestID)}>Answer</button>
+                  <button onClick={() => handleAnswer(question.ID)}>Answer</button>
                 </div>
               )}
             </li>

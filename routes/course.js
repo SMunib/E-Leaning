@@ -11,6 +11,10 @@ router
   .get(courseController.findCourse);
 
 router
+  .route('/findforstudent')
+  .get(courseController.findCourseStudent);
+  
+router
   .route('/findspecific')
   .get(courseController.findspecificCourse)
   .delete(courseController.deleteCourse)

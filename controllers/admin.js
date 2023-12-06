@@ -3,7 +3,7 @@ const util = require('util');
 const queryAsync = util.promisify(mydb.query).bind(mydb);
 
 exports.CheckRequests = async(req,res) =>{
-    const query = 'Select Requests from admin';
+    const query = 'Select Requests,ID from admin';
     try{
         const results = await queryAsync(query);
         if(!results.length){console.log("error");return res.status(401).json({message:'No requests found',success:false})};
@@ -29,11 +29,12 @@ exports.CheckResponse = async(req,res) =>{
 
 exports.giveResponse = async(req,res) => {
     //get requestID somehow
-    const {answer} = req.body;
-    const query = 'Update admin set Responses =? where RequestID = ?';
+    const {questionId,answer} = req.body;
+    const query = 'Update admin set Responses = ? where ID = ?';
+    // console.log("ID:", questionId);
     try{
-        const results = await queryAsync(query,[answer]);
-        if(!results.length){return res.status(401).json({message:'Error while sending'})};
+        const results = await queryAsync(query,[answer,questionId]);
+        if(results.affectedRows === 0){return res.status(401).json({message:'Error while sending'})};
         res.status(201).json({success:true,message:'Response Recorded',data:results});
     }catch(err){
         console.log("error"+err);

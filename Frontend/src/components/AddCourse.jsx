@@ -6,7 +6,7 @@ const AddCourse = () => {
   const [CourseName, setCourseName] = useState("");
   const [modules, setModules] = useState("");
   const [duration, setDuration] = useState("");
-  const [availableSeats, setAvailableSeats] = useState("");
+  const [AvailableSeats, setAvailableSeats] = useState("");
   const [submittedData, setSubmittedData] = useState(null);
 
   const handleSubmit = async (e) => {
@@ -17,13 +17,13 @@ const AddCourse = () => {
         headers :{
           'Content-Type':'application/json',
         },
-        body:JSON.stringify({CourseID,CourseName,modules,duration}),
+        body:JSON.stringify({CourseID,CourseName,modules,duration,AvailableSeats}),
       });
       const result = await response.json();
       if(result.success){
         console.log(result.message);
         //Show Submitted Data
-        const data = { CourseID, CourseName, modules, duration };
+        const data = { CourseID, CourseName, modules, duration ,AvailableSeats};
         setSubmittedData(data);
         // Reset the form
         setCourseID("");
@@ -92,8 +92,8 @@ const AddCourse = () => {
           <div className="label">Available Seats:</div>
           <input
             type="text"
-            id="duration"
-            value={availableSeats}
+            id="Available Seats"
+            value={AvailableSeats}
             onChange={(e) => setAvailableSeats(e.target.value)}
             required
           />
@@ -107,7 +107,7 @@ const AddCourse = () => {
           <p>
             Course ID: {submittedData.CourseID}, Course Name:{" "}
             {submittedData.CourseName}, Modules: {submittedData.modules},
-            Duration: {submittedData.duration}
+            Duration: {submittedData.duration},Available Seats :{submittedData.AvailableSeats}
           </p>
         </div>
       )}

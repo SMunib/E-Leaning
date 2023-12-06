@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 06, 2023 at 09:35 AM
+-- Generation Time: Dec 06, 2023 at 11:07 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -14,6 +14,51 @@ SET time_zone = "+00:00";
 --
 -- Database: `munib`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateStudentInfo` (IN `p_StudentID` INT, IN `p_FirstName` VARCHAR(45), IN `p_LastName` VARCHAR(45), IN `p_Email` VARCHAR(45), IN `p_Password` VARCHAR(255), IN `p_UniversityName` VARCHAR(45), IN `p_Country` VARCHAR(45), IN `p_City` VARCHAR(45), IN `p_PostalCode` VARCHAR(45))   BEGIN
+  START TRANSACTION;
+
+  UPDATE student
+  SET
+    FirstName = p_FirstName,
+    LastName = p_LastName,
+    Email = p_Email,
+    Password = p_Password,
+    UniversityName = p_UniversityName,
+    Country = p_Country,
+    City = p_City,
+    PostalCode = p_PostalCode
+  WHERE
+    StudentID = p_StudentID;
+
+  COMMIT;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateTeacherInfo` (IN `p_TeacherID` INT, IN `p_FirstName` VARCHAR(45), IN `p_LastName` VARCHAR(45), IN `p_Email` VARCHAR(45), IN `p_Password` VARCHAR(45), IN `p_Qualification` VARCHAR(45), IN `p_City` VARCHAR(45), IN `p_Country` VARCHAR(45), IN `p_PostalCode` VARCHAR(45), IN `p_AccountNo` VARCHAR(45))   BEGIN
+  START TRANSACTION;
+
+  UPDATE teacher
+  SET
+    FirstName = p_FirstName,
+    LastName = p_LastName,
+    Email = p_Email,
+    Password = p_Password,
+    Qualification = p_Qualification,
+    City = p_City,
+    Country = p_Country,
+    PostalCode = p_PostalCode,
+    AccountNo = p_AccountNo
+  WHERE
+    TeacherID = p_TeacherID;
+
+  COMMIT;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -32,9 +77,8 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`ID`, `Requests`, `Responses`) VALUES
-(1, NULL, NULL),
-(2, 'hellp me admin', NULL),
-(3, 'can u help me admin chan', NULL);
+(2, 'hellp me admin', 'no'),
+(4, 'Can u help me Mr.Admin?', 'i will try');
 
 -- --------------------------------------------------------
 
@@ -46,32 +90,20 @@ CREATE TABLE `course` (
   `CourseID` varchar(255) NOT NULL,
   `CourseName` varchar(100) DEFAULT NULL,
   `modules` int(11) DEFAULT NULL,
-  `duration` time DEFAULT NULL
+  `duration` time DEFAULT NULL,
+  `AvailableSeats` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `course`
 --
 
-INSERT INTO `course` (`CourseID`, `CourseName`, `modules`, `duration`) VALUES
-('CS-2001', 'PF', 3, '01:00:00'),
-('CS-2002', 'Data Structures', 5, '02:30:00'),
-('CS-2005', 'OS', 2, '01:00:00'),
-('CS-2009', 'Software Analysis And Design', 3, '01:00:00');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `discussionforum`
---
-
-CREATE TABLE `discussionforum` (
-  `CourseID` varchar(255) NOT NULL,
-  `Username` varchar(45) DEFAULT NULL,
-  `Comment` text DEFAULT NULL,
-  `Timestamp` datetime(6) DEFAULT NULL,
-  `StudentID` int(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+INSERT INTO `course` (`CourseID`, `CourseName`, `modules`, `duration`, `AvailableSeats`) VALUES
+('CS-2001', 'PF', 3, '01:00:00', 5),
+('CS-2002', 'Data Structures', 5, '02:30:00', 5),
+('CS-2005', 'OS', 2, '01:00:00', 4),
+('CS-2006', 'Object Oriented Programming', 3, '01:30:00', 4),
+('CS-2009', 'Software Analysis And Design', 3, '01:00:00', 2);
 
 -- --------------------------------------------------------
 
@@ -93,6 +125,27 @@ CREATE TABLE `quizzes` (
 INSERT INTO `quizzes` (`QuizID`, `quiz`, `CourseID`, `status`) VALUES
 (1, 'https://screenrant.com/best-historical-tv-series-imdb/', 'CS-2002', 0);
 
+--
+-- Triggers `quizzes`
+--
+DELIMITER $$
+CREATE TRIGGER `after_update_quizzes` AFTER UPDATE ON `quizzes` FOR EACH ROW BEGIN
+    DECLARE total_quizzes INT;
+    DECLARE completed_quizzes INT;
+
+    -- Get the total number of quizzes and completed quizzes for the course
+    SELECT COUNT(*), SUM(status) INTO total_quizzes, completed_quizzes
+    FROM quizzes
+    WHERE CourseID = NEW.CourseID;
+
+    -- Check if all quizzes are completed
+    IF completed_quizzes = total_quizzes THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'All quizzes completed';
+    END IF;
+END
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -101,8 +154,8 @@ INSERT INTO `quizzes` (`QuizID`, `quiz`, `CourseID`, `status`) VALUES
 
 CREATE TABLE `reg_course` (
   `CourseID` varchar(255) NOT NULL,
-  `TeacherID` int(255) NOT NULL,
-  `StudentID` int(45) NOT NULL,
+  `TeacherID` int(255) DEFAULT NULL,
+  `StudentID` int(45) DEFAULT NULL,
   `Grade` int(11) DEFAULT NULL,
   `C_Name` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -112,7 +165,37 @@ CREATE TABLE `reg_course` (
 --
 
 INSERT INTO `reg_course` (`CourseID`, `TeacherID`, `StudentID`, `Grade`, `C_Name`) VALUES
-('CS-2002', 7, 25, NULL, 'Data Structures');
+('CS-2001', 7, 25, NULL, 'PF');
+
+--
+-- Triggers `reg_course`
+--
+DELIMITER $$
+CREATE TRIGGER `before_enroll_trigger` BEFORE INSERT ON `reg_course` FOR EACH ROW BEGIN
+    DECLARE remaining_seats INT;
+
+    -- Get the current AvailableSeats value
+    SELECT AvailableSeats INTO remaining_seats
+    FROM course
+    WHERE CourseID = NEW.CourseID;
+
+    -- Subtract 1 from AvailableSeats
+    SET remaining_seats = remaining_seats - 1;
+
+    -- Check if there are remaining seats
+    IF remaining_seats >= 0 THEN
+        -- Update the course table with the new AvailableSeats value
+        UPDATE course
+        SET AvailableSeats = remaining_seats
+        WHERE CourseID = NEW.CourseID;
+    ELSE
+        -- Raise an error to prevent enrollment
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Enrollment failed. No more available seats for this course.';
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -182,6 +265,28 @@ CREATE TABLE `videos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
+-- Triggers `videos`
+--
+DELIMITER $$
+CREATE TRIGGER `after_update_video_status` AFTER UPDATE ON `videos` FOR EACH ROW BEGIN
+    DECLARE total_videos INT;
+    DECLARE completed_videos INT;
+
+    -- Get the total number of videos and completed videos for the course
+    SELECT COUNT(*), SUM(Status) INTO total_videos, completed_videos
+    FROM videos
+    WHERE CourseID = NEW.CourseID;
+
+    -- Check if all videos are completed
+    IF completed_videos = total_videos THEN
+        UPDATE course SET CourseStatus = 'Completed' WHERE CourseID = NEW.CourseID;
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'All videos completed';
+    END IF;
+END
+$$
+DELIMITER ;
+
+--
 -- Indexes for dumped tables
 --
 
@@ -200,13 +305,6 @@ ALTER TABLE `course`
   ADD UNIQUE KEY `CourseName_Idx` (`CourseName`);
 
 --
--- Indexes for table `discussionforum`
---
-ALTER TABLE `discussionforum`
-  ADD PRIMARY KEY (`CourseID`,`StudentID`),
-  ADD KEY `StudentID_idx` (`StudentID`);
-
---
 -- Indexes for table `quizzes`
 --
 ALTER TABLE `quizzes`
@@ -216,7 +314,7 @@ ALTER TABLE `quizzes`
 -- Indexes for table `reg_course`
 --
 ALTER TABLE `reg_course`
-  ADD PRIMARY KEY (`CourseID`,`TeacherID`,`StudentID`) USING BTREE,
+  ADD UNIQUE KEY `identifier` (`CourseID`,`TeacherID`,`StudentID`),
   ADD KEY `InstructorID_idx` (`TeacherID`),
   ADD KEY `StudentID_idx` (`StudentID`) USING BTREE;
 
@@ -252,7 +350,7 @@ ALTER TABLE `videos`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `quizzes`
@@ -281,13 +379,6 @@ ALTER TABLE `videos`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `discussionforum`
---
-ALTER TABLE `discussionforum`
-  ADD CONSTRAINT `FK_Student` FOREIGN KEY (`StudentID`) REFERENCES `student` (`StudentID`),
-  ADD CONSTRAINT `discussionforum_ibfk_1` FOREIGN KEY (`CourseID`) REFERENCES `reg_course` (`CourseID`) ON DELETE NO ACTION;
 
 --
 -- Constraints for table `reg_course`

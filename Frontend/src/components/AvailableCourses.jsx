@@ -62,7 +62,7 @@ const Courses = ({ setActiveOption, userType }) => {
           // } else { alert("error"); }
   
           // Replace 'https://api.example.com/available-courses' with your actual API endpoint for fetching available courses
-          const availableResponse = await fetch('http://localhost:2000/course/find', {
+          const availableResponse = await fetch('http://localhost:2000/course/findforstudent', {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -103,7 +103,7 @@ const Courses = ({ setActiveOption, userType }) => {
     setSelectedCourse(null);
     setActiveOption(null);
   };
-  const handleEnroll = async (id) => {
+  const handleEnroll = async (id,name) => {
     if(userType === "teacher"){
       try{
         const token = localStorage.getItem('token');
@@ -113,7 +113,7 @@ const Courses = ({ setActiveOption, userType }) => {
               'Authorization': `Bearer ${token}`,
               'Content-Type':'application/json', 
             },
-            body : JSON.stringify({id,userType}),
+            body : JSON.stringify({id,name}),
           });
           const data = await Response.json();
           if(data.success){
@@ -158,10 +158,10 @@ const Courses = ({ setActiveOption, userType }) => {
           <p>Course Code: {selectedCourse.CourseID}</p>
           <p>Course Modules: {selectedCourse.modules} </p>
           <p>Course Duration: {selectedCourse.duration}</p>
-
+          <p>Seats: {selectedCourse.AvailableSeats}</p>
           {/* Add more course details here */}
           <button onClick={handleGoBack}>Go Back</button>
-          <button onClick={() => handleEnroll(selectedCourse.CourseID)}>Enroll</button>
+          <button onClick={() => handleEnroll(selectedCourse.CourseID,selectedCourse.CourseName)}>Enroll</button>
         </div>
       ) : (
         <div>

@@ -14,7 +14,11 @@ const Responses = () => {
 
       });
       const data = await response.json();
-      setAnsweredQuestions(data.data);
+      if(data.success){
+        setAnsweredQuestions(data.data);
+      }else{
+        console.log(data.message);
+      }
     } catch (error) {
       console.error('Error fetching answered questions:', error);
     }
@@ -33,9 +37,9 @@ const Responses = () => {
       ) : (
         <ul>
           {answeredQuestions.map((question) => (
-            <li key={question.RequestID}>
-              <p>{question.text}</p>
-              <p><strong>Admin's Answer:</strong> {question.Response}</p>
+            <li key={question.ID}>
+              <p>{question.Requests}</p>
+              <p><strong>Admin's Answer:</strong> {question.Responses}</p>
             </li>
           ))}
         </ul>

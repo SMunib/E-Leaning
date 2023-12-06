@@ -39,11 +39,11 @@ exports.checkEnrolledCoursesStudent =  async(req,res)=>{
 
 exports.EnrollTeacher = async(req,res) =>{
     const Userid = req.userid;
-    const{id,userType} = req.body;
-    const query = `Update reg_course set ${userType}ID = ? where CourseID = ?`;
+    const{id,name} = req.body;
+    const query = 'Insert into reg_course (CourseID,C_Name,TeacherID) values (?,?,?)';
     console.log(query);
     try{
-        const results = await queryAsync(query, [Userid ,id ]);
+        const results = await queryAsync(query, [id,name,Userid]);
         if(results.affectedRows === 0){
             return res.status(400).json({success:false,message:"Course not found"});
         }

@@ -3,10 +3,10 @@ const util = require('util');
 const queryAsync = util.promisify(mydb.query).bind(mydb);
 
 exports.addCourse = async(req,res)=>{
-    const {CourseID,CourseName,duration,modules} = req.body;
-    const query = "Insert into course (CourseID,CourseName,duration,modules) values (?,?,?,?)";
+    const {CourseID,CourseName,duration,modules,AvailableSeats} = req.body;
+    const query = "Insert into course (CourseID,CourseName,duration,modules,AvailableSeats) values (?,?,?,?,?)";
     try{
-        const results = await queryAsync(query,[CourseID,CourseName,duration,modules]);
+        const results = await queryAsync(query,[CourseID,CourseName,duration,modules,AvailableSeats]);
         if(results.affectedRows === 0){
           console.log('Error: Failed to insert into database: '+err);
           return res.status(400).json({message:err.message,success:false});
@@ -41,6 +41,19 @@ exports.findCourse = async(req,res) => {
       res.status(500).send();
     }
   }
+
+exports.findCourseStudent = async(req,res) =>{
+  const query = 'Select * from reg_course join course on reg_course.CourseID=course.CourseID';
+  try{
+    const results = await queryAsync(query);
+    if(!results.length){return res.status(400).json({success:false,message:'No Applicable Courses'})};
+    res.status(200).json({success:true,message:"Found",data:results});
+  }catch(error){
+    console.log("error"+error);
+    res.status(500).send();
+  }
+}
+  
 exports.findspecificCourse = async(req,res) => {
     var id = req.params.CourseID;
     const query = 'Select * from course where CourseID = ?';
