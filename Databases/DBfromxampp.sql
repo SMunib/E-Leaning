@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2023 at 05:00 AM
+-- Generation Time: Dec 06, 2023 at 05:42 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -12,7 +12,7 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 --
--- Database: `mydb`
+-- Database: `munib`
 --
 
 -- --------------------------------------------------------
@@ -23,9 +23,17 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `admin` (
   `ID` int(11) NOT NULL,
-  `Requests` varchar(255) DEFAULT NULL,
+  `Requests` text DEFAULT NULL,
   `Responses` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`ID`, `Requests`, `Responses`) VALUES
+(1, NULL, NULL),
+(2, 'hellp me admin', NULL);
 
 -- --------------------------------------------------------
 
@@ -45,7 +53,10 @@ CREATE TABLE `course` (
 --
 
 INSERT INTO `course` (`CourseID`, `CourseName`, `modules`, `duration`) VALUES
-('CS-2001', 'PF', 3, '01:00:00');
+('CS-2001', 'PF', 3, '01:00:00'),
+('CS-2002', 'Data Structures', 5, '02:30:00'),
+('CS-2005', 'OS', 2, '01:00:00'),
+('CS-2009', 'Software Analysis And Design', 3, '01:00:00');
 
 -- --------------------------------------------------------
 
@@ -60,6 +71,26 @@ CREATE TABLE `discussionforum` (
   `Timestamp` datetime(6) DEFAULT NULL,
   `StudentID` int(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quizzes`
+--
+
+CREATE TABLE `quizzes` (
+  `QuizID` int(11) NOT NULL,
+  `quiz` text NOT NULL,
+  `CourseID` varchar(255) DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `quizzes`
+--
+
+INSERT INTO `quizzes` (`QuizID`, `quiz`, `CourseID`, `status`) VALUES
+(1, 'https://screenrant.com/best-historical-tv-series-imdb/', 'CS-2002', 0);
 
 -- --------------------------------------------------------
 
@@ -80,8 +111,7 @@ CREATE TABLE `reg_course` (
 --
 
 INSERT INTO `reg_course` (`CourseID`, `TeacherID`, `StudentID`, `Grade`, `C_Name`) VALUES
-('CS2001', 7, 23, 4, 'PF'),
-('CS2003', NULL, NULL, NULL, 'Data Structures');
+('CS-2002', 7, 25, NULL, 'Data Structures');
 
 -- --------------------------------------------------------
 
@@ -144,10 +174,10 @@ INSERT INTO `teacher` (`TeacherID`, `FirstName`, `LastName`, `Email`, `Password`
 --
 
 CREATE TABLE `videos` (
+  `VidID` int(11) NOT NULL,
   `CourseID` varchar(255) NOT NULL,
   `URL` varchar(255) DEFAULT NULL,
-  `Completed` tinyint(1) DEFAULT NULL,
-  `Uploaded_Vid` longblob DEFAULT NULL
+  `Status` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -174,6 +204,12 @@ ALTER TABLE `course`
 ALTER TABLE `discussionforum`
   ADD PRIMARY KEY (`CourseID`,`StudentID`),
   ADD KEY `StudentID_idx` (`StudentID`);
+
+--
+-- Indexes for table `quizzes`
+--
+ALTER TABLE `quizzes`
+  ADD PRIMARY KEY (`QuizID`);
 
 --
 -- Indexes for table `reg_course`
@@ -205,8 +241,8 @@ ALTER TABLE `teacher`
 -- Indexes for table `videos`
 --
 ALTER TABLE `videos`
-  ADD PRIMARY KEY (`CourseID`),
-  ADD UNIQUE KEY `CourseID_UNIQUE` (`CourseID`);
+  ADD PRIMARY KEY (`VidID`),
+  ADD KEY `FK_CourseIDasd` (`CourseID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -216,7 +252,13 @@ ALTER TABLE `videos`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `quizzes`
+--
+ALTER TABLE `quizzes`
+  MODIFY `QuizID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `student`
@@ -229,6 +271,12 @@ ALTER TABLE `student`
 --
 ALTER TABLE `teacher`
   MODIFY `TeacherID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `videos`
+--
+ALTER TABLE `videos`
+  MODIFY `VidID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -245,8 +293,9 @@ ALTER TABLE `discussionforum`
 -- Constraints for table `reg_course`
 --
 ALTER TABLE `reg_course`
-  ADD CONSTRAINT `FK_StudentID` FOREIGN KEY (`StudentID`) REFERENCES `student` (`StudentID`),
-  ADD CONSTRAINT `FK_TeacherID` FOREIGN KEY (`TeacherID`) REFERENCES `teacher` (`TeacherID`);
+  ADD CONSTRAINT `FK_CourseID22` FOREIGN KEY (`CourseID`) REFERENCES `course` (`CourseID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_StudentID` FOREIGN KEY (`StudentID`) REFERENCES `student` (`StudentID`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `FK_TeacherID` FOREIGN KEY (`TeacherID`) REFERENCES `teacher` (`TeacherID`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
 -- Constraints for table `videos`

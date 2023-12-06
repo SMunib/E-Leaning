@@ -2,26 +2,42 @@ import React, { useState } from "react";
 import "./AddCourse.css";
 
 const AddCourse = () => {
-  const [courseId, setCourseId] = useState("");
-  const [courseName, setCourseName] = useState("");
+  const [CourseID, setCourseID] = useState("");
+  const [CourseName, setCourseName] = useState("");
   const [modules, setModules] = useState("");
   const [duration, setDuration] = useState("");
   const [submittedData, setSubmittedData] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Store the submitted data
-    const data = { courseId, courseName, modules, duration };
-    setSubmittedData(data);
-
-    // Reset the form
-    setCourseId("");
-    setCourseName("");
-    setModules("");
-    setDuration("");
-  };
-
+    try{
+      const response = await fetch('http://localhost:2000/course/add',{
+        method : 'POST',
+        headers :{
+          'Content-Type':'application/json',
+        },
+        body:JSON.stringify({CourseID,CourseName,modules,duration}),
+      });
+      const result = await response.json();
+      if(result.success){
+        console.log(result.message);
+        //Show Submitted Data
+        const data = { CourseID, CourseName, modules, duration };
+        setSubmittedData(data);
+        // Reset the form
+        setCourseID("");
+        setCourseName("");
+        setModules("");
+        setDuration("");
+        //End
+      }else{
+        alert(result.message);
+      }
+  }catch(error){
+    console.log("error" + error);
+    // return res.status(500).send();
+  }
+}
   return (
     <div className="add-course-container">
       <h2>Add New Course</h2>
@@ -30,9 +46,9 @@ const AddCourse = () => {
           <div className="label">Course ID:</div>
           <input
             type="text"
-            id="courseId"
-            value={courseId}
-            onChange={(e) => setCourseId(e.target.value)}
+            id="CourseID"
+            value={CourseID}
+            onChange={(e) => setCourseID(e.target.value)}
             required
           />
         </div>
@@ -41,8 +57,8 @@ const AddCourse = () => {
           <div className="label">Course Name:</div>
           <input
             type="text"
-            id="courseName"
-            value={courseName}
+            id="CourseName"
+            value={CourseName}
             onChange={(e) => setCourseName(e.target.value)}
             required
           />
@@ -76,8 +92,8 @@ const AddCourse = () => {
       {submittedData && (
         <div className="submitted-data">
           <p>
-            Course ID: {submittedData.courseId}, Course Name:{" "}
-            {submittedData.courseName}, Modules: {submittedData.modules},
+            Course ID: {submittedData.CourseID}, Course Name:{" "}
+            {submittedData.CourseName}, Modules: {submittedData.modules},
             Duration: {submittedData.duration}
           </p>
         </div>

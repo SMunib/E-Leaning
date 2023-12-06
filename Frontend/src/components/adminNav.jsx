@@ -1,6 +1,6 @@
 // Navigation.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import './styles.css';
 import Requests from './Requests';
 import Responses from './Responses';
@@ -10,11 +10,10 @@ import AddCourse from "./AddCourse";
 
 const AdminNav = ({userType}) => {
   const [selectedOption, setSelectedOption] = useState("Requests");
-
   const handleOptionClick = (option) => {
     setSelectedOption(option);
   };
-
+  
   return (
     <div>
       <nav className="navigation">
@@ -39,7 +38,6 @@ const AdminNav = ({userType}) => {
               Responses
             </button>
           </li>
-          //added here
             <li>
             <button
               className={selectedOption === "AddCourse" ? "active" : ""}
@@ -63,7 +61,6 @@ const AdminNav = ({userType}) => {
         {selectedOption === "Requests" && <Requests/>}
         {selectedOption === "Responses" && <Responses/>}
         {selectedOption === "Logout" && <Logout/>}
-        //added here
         {selectedOption === "AddCourse" && <AddCourse />}
         {/* Add other conditions for different components */}
       </div>

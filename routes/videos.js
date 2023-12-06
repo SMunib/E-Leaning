@@ -11,7 +11,7 @@ router
   .get(videoController.findVideos);
 
 router
-  .route('/find/:CourseID')
+  .route('/find/:VideoUrl')
   .get(videoController.findSpecificVideo)
   .delete(videoController.removeVideo)
   .patch(videoController.modifyVideo);

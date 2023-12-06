@@ -1,19 +1,21 @@
 const mydb = require('../routes/db');
+const util = require('util');
+const queryAsync = util.promisify(mydb.query).bind(mydb);
 
 exports.addCourse = async(req,res)=>{
-    const {CourseID,CourseName,Duration,TeacherID,Modules,TotalStudents,TotalVids,StudentID,Grade} = req.body;
-    const query = "Insert into course (CourseID,CourseName,Duration,TeacherID,Modules,TotalStudents,TotalVids,StudentID,Grade) values (?,?,?,?,?,?,?,?,?)";
+    const {CourseID,CourseName,duration,modules} = req.body;
+    const query = "Insert into course (CourseID,CourseName,duration,modules) values (?,?,?,?)";
     try{
-        await mydb.query(query,[CourseID,CourseName,Duration,TeacherID,Modules,TotalStudents,TotalVids,StudentID,Grade],(err) => {
-        if(err){
+        const results = await queryAsync(query,[CourseID,CourseName,duration,modules]);
+        if(results.affectedRows === 0){
           console.log('Error: Failed to insert into database: '+err);
-          return res.status(400).json({message:err.message});
+          return res.status(400).json({message:err.message,success:false});
         }
         res.status(201).json({
-          status:'ok',
-          message:'New Course Created',
+          success:true,
+          message:'New Course Added',
+          data:results,
         });
-      });
     }catch(err){
       console.log('Error::'+err);
       res.status(400).send();

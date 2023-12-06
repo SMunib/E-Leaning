@@ -19,9 +19,9 @@ const Requests = () => {
         const data = await response.json();
         // Assuming the response structure is an array of questions
         setQuestions(data.data);
-        console.log(questions);
+        // console.log(questions);
         // Initialize newAnswers array with empty strings for each question
-        setNewAnswers(data.map(() => ''));
+        setNewAnswers(data.data.map(() => ''));
       } catch (error) {
         console.error('Error fetching questions:', error);
       }

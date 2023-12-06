@@ -9,6 +9,7 @@ const videos = require('./routes/videos');
 const auth = require('./routes/auth');
 const req_course = require('./routes/reg_course');
 const admin = require('./routes/admin');
+const quizzes = require('./routes/quizzes');
 const app = express();
 const path = require('path');
 const publicDirectory = path.join(__dirname,'./Frontend/src/components');
@@ -27,6 +28,8 @@ app.use('/',authorize);
 app.use('/auth',auth);
 app.use('/reg_course',req_course);
 app.use('/admin',admin);
+app.use('/quizzes',quizzes);
+
 const Port = process.env.Port || 2000;
 
 // app.get('/',(req,res) => {

@@ -14,7 +14,6 @@ const Help = ({userType}) => {
   };
   // Function to submit the user's Request to the system
   const submitRequest = async () => {
-    console.log(JSON.stringify({ Request }));
     try{
       const response = await fetch('http://localhost:2000/admin/Request',{
         method : 'POST',

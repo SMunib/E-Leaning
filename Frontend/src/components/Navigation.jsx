@@ -1,6 +1,5 @@
 // Navigation.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import './styles.css';
 import Courses from './Courses';
 import Profile from './Profile';

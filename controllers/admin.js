@@ -3,10 +3,10 @@ const util = require('util');
 const queryAsync = util.promisify(mydb.query).bind(mydb);
 
 exports.CheckRequests = async(req,res) =>{
-    const query = 'Select RequestID,Request from admin';
+    const query = 'Select Requests from admin';
     try{
         const results = await queryAsync(query);
-        if(!results.length){console.log("error");return res.status(401).json({message:'No requests found'})};
+        if(!results.length){console.log("error");return res.status(401).json({message:'No requests found',success:false})};
         return res.status(201).json({success:true,message:'Requests Found',data:results});
     }catch(err){
         console.log("error"+err);
@@ -15,7 +15,7 @@ exports.CheckRequests = async(req,res) =>{
 };
 
 exports.CheckResponse = async(req,res) =>{
-    const query = 'Select RequestID,Response from admin';
+    const query = 'Select Responses from admin';
     try{
         const results = await queryAsync(query);
         if(!results.length){return res.status(401).json({message:'No response found'})};
@@ -29,10 +29,10 @@ exports.CheckResponse = async(req,res) =>{
 
 exports.giveResponse = async(req,res) => {
     //get requestID somehow
-    const {answer,questionId} = req.body;
-    const query = 'Update admin set Response where RequestID = ?';
+    const {answer} = req.body;
+    const query = 'Update admin set Responses =? where RequestID = ?';
     try{
-        const results = await queryAsync(query,[answer,questionId]);
+        const results = await queryAsync(query,[answer]);
         if(!results.length){return res.status(401).json({message:'Error while sending'})};
         res.status(201).json({success:true,message:'Response Recorded',data:results});
     }catch(err){
@@ -43,18 +43,13 @@ exports.giveResponse = async(req,res) => {
 
 exports.SendRequest = async(req,res) =>{
         const {Request}= req.body;
-        console.log("req: ",Request);
-        const query = "Insert into admin set ?";
-        console.log(query);
+        // console.log("req: ",Request);
+        const query = 'insert into admin (Requests) values (?)';
+        // console.log(query);
         try{
-            await queryAsync(query,[Request],(err)=>{
-                if(err){
-                    console.log('Error: Failed to insert into database: '+err);
-                    return res.status(400).json({message:err.message});
-                  }
-                // if(!results.length){return res.status(401).json({message:'Error while sending'})};
-                res.status(201).json({success:true,message:'Request Sent'});
-            });
+            const results = await queryAsync(query,[Request])
+            if(results.affectedRows === 0){return res.status(401).json({message:'Error while sending',success:false})};
+            res.status(201).json({success:true,message:'Request Sent'});
         }catch(err){
             console.log("error"+err);
             return res.status(500).send();

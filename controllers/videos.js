@@ -1,19 +1,20 @@
 const mydb = require('../routes/db');
+const util = require('util');
+const queryAsync = util.promisify(mydb.query).bind(mydb);
 
 exports.addVideo = async(req,res)=>{
-    const {CourseID,URL,Completed} = req.body;
-    const query = "Insert into videos (CourseID,URL,Completed) values (?,?,?)";
+    const {CourseID,VidID,URL} = req.body;
+    const query = "Insert into videos (CourseID,VidID,URL) values (?,?,?)";
     try{
-      mydb.query(query,[CourseID,URL,Completed],(err) => {
-        if(err){
+      const results = await queryAsync(query,[CourseID,VidID,URL]);
+        if(!results.affectedRows === 0){
           console.log('Error: Failed to insert into database: '+err);
-          return res.status(400).json({message:err.message});
+          return res.status(400).json({success:false,message:err.message});
         }
         res.status(201).json({
-          status:'ok',
+          success:true,
           message:'New Video Added',
         });
-      });
     }catch(err){
       console.log('Error::'+err);
       res.status(400).send();
@@ -40,47 +41,44 @@ exports.findVideos =async(req,res) => {
     }
   }
 exports.findSpecificVideo = async(req,res) => {
-    var id = req.params.CourseID;
+    const id = req.params.VideoUrl;
     const query = 'Select * from videos where CourseID = ?';
     try{
-      mydb.query(query,[id],(err,results) => {
-        if(err){
-          console.log('Failed to execute query: '+err);
-          return res.status(400).json({message:err.message});
-        }
-        if(!results){
+        const results = await queryAsync(query,[id]);
+        // if(err){
+        //   console.log('Failed to execute query: '+err);
+        //   return res.status(400).json({message:err.message,success:false});
+        // }
+        if(!results.length){
           console.log('Video does not exist ');
-          return res.status(404).json({message:'Error: Video Does not Exist in the Table'});
+          return res.status(404).json({message:'Error: Video Does not Exist in the Table',success:false});
         }
         res.status(201).json({
-          status:'ok',
-          message:'data found',
+          success:true,
+          message:'Video Found',
           data:results,
         });
-      });
     }catch(err){
       console.log('Error::'+err);
       res.status(500).send();
     }
   }
 exports.removeVideo =async(req,res)=>{
-    var id = req.params.CourseID;
-    var url = req.params.URL;
-    const query = 'Delete from videos where CourseID = ?';
+    const id = req.params.VideoUrl;
+    const query = 'Delete from videos where URL = ?';
     try{
-      mydb.query(query,[id,url],(err,results) => {
-        if(err) return res.status(400).json({message:err.message});
+      const results = await queryAsync(query,[id]);
         if(results.affectedRows === 0) return res.status(404).json({message:'Video not Found'});
         return res.status(201).json({
-          status:"ok",
-          message:"Tuple Deleted",
+          success:true,
+          message:"Video Deleted",
         });
-      });
     }catch(err){
       console.log('Error:: '+err);
       res.status(500).send();
     }
   }
+
 exports.modifyVideo =async(req,res) => {
     const allowedAttributes = ['Completed','URL'];
     const id = req.params.CourseID;

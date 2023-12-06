@@ -1,5 +1,4 @@
 // Responses.js
-
 import React, { useState, useEffect } from 'react';
 import './Responses.css'; // You can create a Responses.css file for styling
 
@@ -10,9 +9,12 @@ const Responses = () => {
   const fetchAnsweredQuestionsFromDB = async () => {
     // Replace the URL with your actual backend API endpoint for fetching answered questions
     try {
-      const response = await fetch('YOUR_API_ENDPOINT_FOR_ANSWERED_QUESTIONS');
+      const response = await fetch('http://localhost:2000/admin/Response',{
+        method:'Get',
+
+      });
       const data = await response.json();
-      setAnsweredQuestions(data.answeredQuestions);
+      setAnsweredQuestions(data.data);
     } catch (error) {
       console.error('Error fetching answered questions:', error);
     }
@@ -31,9 +33,9 @@ const Responses = () => {
       ) : (
         <ul>
           {answeredQuestions.map((question) => (
-            <li key={question.id}>
+            <li key={question.RequestID}>
               <p>{question.text}</p>
-              <p><strong>Admin's Answer:</strong> {question.answer}</p>
+              <p><strong>Admin's Answer:</strong> {question.Response}</p>
             </li>
           ))}
         </ul>
