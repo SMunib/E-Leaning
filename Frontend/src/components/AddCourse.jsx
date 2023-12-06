@@ -6,6 +6,7 @@ const AddCourse = () => {
   const [CourseName, setCourseName] = useState("");
   const [modules, setModules] = useState("");
   const [duration, setDuration] = useState("");
+  const [availableSeats, setAvailableSeats] = useState("");
   const [submittedData, setSubmittedData] = useState(null);
 
   const handleSubmit = async (e) => {
@@ -29,6 +30,7 @@ const AddCourse = () => {
         setCourseName("");
         setModules("");
         setDuration("");
+        setAvailableSeats("");
         //End
       }else{
         alert(result.message);
@@ -82,6 +84,17 @@ const AddCourse = () => {
             id="duration"
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <div className="label">Available Seats:</div>
+          <input
+            type="text"
+            id="duration"
+            value={availableSeats}
+            onChange={(e) => setAvailableSeats(e.target.value)}
             required
           />
         </div>
