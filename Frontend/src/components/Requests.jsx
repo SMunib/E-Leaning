@@ -36,7 +36,7 @@ const Requests = () => {
       const answer = newAnswers[questionId - 1];
 
       // Send a request to your backend to update the answer in the database
-      const response = await fetch('http://localhost:2000/admin/giveResponse', {
+      const response = await fetch('http://localhost:2000/admin/Response', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

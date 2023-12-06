@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 06, 2023 at 05:42 AM
+-- Generation Time: Dec 06, 2023 at 09:35 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -33,7 +33,8 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`ID`, `Requests`, `Responses`) VALUES
 (1, NULL, NULL),
-(2, 'hellp me admin', NULL);
+(2, 'hellp me admin', NULL),
+(3, 'can u help me admin chan', NULL);
 
 -- --------------------------------------------------------
 
@@ -100,8 +101,8 @@ INSERT INTO `quizzes` (`QuizID`, `quiz`, `CourseID`, `status`) VALUES
 
 CREATE TABLE `reg_course` (
   `CourseID` varchar(255) NOT NULL,
-  `TeacherID` int(255) DEFAULT NULL,
-  `StudentID` int(45) DEFAULT NULL,
+  `TeacherID` int(255) NOT NULL,
+  `StudentID` int(45) NOT NULL,
   `Grade` int(11) DEFAULT NULL,
   `C_Name` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -215,8 +216,7 @@ ALTER TABLE `quizzes`
 -- Indexes for table `reg_course`
 --
 ALTER TABLE `reg_course`
-  ADD PRIMARY KEY (`CourseID`) USING BTREE,
-  ADD UNIQUE KEY `Identify_idx` (`CourseID`,`TeacherID`,`StudentID`),
+  ADD PRIMARY KEY (`CourseID`,`TeacherID`,`StudentID`) USING BTREE,
   ADD KEY `InstructorID_idx` (`TeacherID`),
   ADD KEY `StudentID_idx` (`StudentID`) USING BTREE;
 
@@ -252,7 +252,7 @@ ALTER TABLE `videos`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `quizzes`
@@ -294,8 +294,8 @@ ALTER TABLE `discussionforum`
 --
 ALTER TABLE `reg_course`
   ADD CONSTRAINT `FK_CourseID22` FOREIGN KEY (`CourseID`) REFERENCES `course` (`CourseID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_StudentID` FOREIGN KEY (`StudentID`) REFERENCES `student` (`StudentID`) ON DELETE SET NULL ON UPDATE SET NULL,
-  ADD CONSTRAINT `FK_TeacherID` FOREIGN KEY (`TeacherID`) REFERENCES `teacher` (`TeacherID`) ON DELETE SET NULL ON UPDATE SET NULL;
+  ADD CONSTRAINT `FK_StudentID` FOREIGN KEY (`StudentID`) REFERENCES `student` (`StudentID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_TeacherID` FOREIGN KEY (`TeacherID`) REFERENCES `teacher` (`TeacherID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `videos`
